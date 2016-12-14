@@ -78,6 +78,11 @@ public class Garden extends GameObject implements GameCallback {
     }
 
     @Override
+    public int compareTo(Object o) {
+        return 0;
+    }
+
+    @Override
     public void handleEvent(int x, int y, int action) {
         if(items == null){
             return;

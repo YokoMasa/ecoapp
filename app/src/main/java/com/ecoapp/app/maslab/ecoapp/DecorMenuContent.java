@@ -12,7 +12,7 @@ import static com.ecoapp.app.maslab.ecoapp.SizeManager.*;
  * Created by masato on 2016/12/11.
  */
 
-public class DecorMenuContent extends GameObject {
+public class DecorMenuContent extends GameObject{
 
     private Bitmap icon;
     private String id;
@@ -26,6 +26,10 @@ public class DecorMenuContent extends GameObject {
 
     public String getId() {
         return id;
+    }
+
+    public int getHowMuch() {
+        return howMuch;
     }
 
     @Override
@@ -75,6 +79,19 @@ public class DecorMenuContent extends GameObject {
         setHandleEventScenes(new int[]{DecorMenuContentHandler.SCENE_MAIN});
         bitmapX = size/2 - icon.getWidth()/2;
         bitmapY = size*7/10 - icon.getHeight();
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        DecorMenuContent content = (DecorMenuContent) o;
+        int diff = getHowMuch() - content.getHowMuch();
+        if(diff<0){
+            return -1;
+        }else if(0<diff){
+            return 1;
+        }else {
+            return 0;
+        }
     }
 
     public static interface DecorMenuContentListener{

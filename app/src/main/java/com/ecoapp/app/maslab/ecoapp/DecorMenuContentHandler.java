@@ -66,6 +66,7 @@ public class DecorMenuContentHandler extends GameObject implements DecorMenuCont
             content.setY(baseY + (int)i/3 * gap);
             handler.addGameObject(content);
         }
+        handler.sort();
     }
 
     @Override

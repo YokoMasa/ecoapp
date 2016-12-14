@@ -7,23 +7,23 @@ import com.ecoapp.app.maslab.ecoapp.garden.GardenItem;
  * Created by masato on 2016/12/14.
  */
 
-public class Item1 extends GardenItem {
+public class Item4 extends GardenItem {
 
-    public static int howMuch = 100;
+    public static int howMuch = 400;
 
     @Override
     public void tick() {
 
     }
 
-    public Item1() {
-        id = "1";
+    public Item4() {
+        id = "4";
         mainBitmap = GardenBitmaps.getBitmap(id);
-        icon = GardenBitmaps.getBitmap("icon1");
+        icon = GardenBitmaps.getBitmap("icon4");
         setBitmapDimen();
-        cWidth = bitmapWidth * 1/3;
-        cHeight = cWidth/2;
-        gapX = bitmapWidth/2 - cWidth/2;
-        gapY = bitmapHeight - cHeight;
+        cWidth = bitmapWidth * 8/10;
+        cHeight = bitmapHeight * 9/10;
+        gapX = bitmapWidth * 1/10;
+        gapY = bitmapHeight * 1/20;
     }
 }

@@ -2,11 +2,13 @@ package com.ecoapp.app.maslab.ecoapp;
 
 import android.graphics.Canvas;
 
+import java.util.Comparator;
+
 /**
  * Created by masato on 2016/12/07.
  */
 
-public abstract class GameObject {
+public abstract class GameObject implements Comparable{
 
     public static final int DONT_HANDLE = 325849;
     protected float x,y;
@@ -106,5 +108,10 @@ public abstract class GameObject {
 
     public GameObject(){
 
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        return 0;
     }
 }

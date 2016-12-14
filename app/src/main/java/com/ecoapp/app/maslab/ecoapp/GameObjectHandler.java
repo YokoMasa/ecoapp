@@ -3,13 +3,15 @@ package com.ecoapp.app.maslab.ecoapp;
 import android.graphics.Canvas;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
  * Created by masato on 2016/12/07.
  */
 
-public class GameObjectHandler {
+public class GameObjectHandler{
 
     private List<GameObject> gameObjects = new ArrayList<GameObject>();
 
@@ -35,6 +37,10 @@ public class GameObjectHandler {
                 gameObjects.get(i).handleEvent(x, y, action);
             }
         }
+    }
+
+    public void sort(){
+        Collections.sort(gameObjects);
     }
 
     public void addGameObject(GameObject object){

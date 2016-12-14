@@ -7,7 +7,7 @@ import com.ecoapp.app.maslab.ecoapp.garden.GardenItem;
  * Created by masato on 2016/12/14.
  */
 
-public class Item1 extends GardenItem {
+public class Item2 extends GardenItem {
 
     public static int howMuch = 100;
 
@@ -16,14 +16,14 @@ public class Item1 extends GardenItem {
 
     }
 
-    public Item1() {
-        id = "1";
+    public Item2() {
+        id = "2";
         mainBitmap = GardenBitmaps.getBitmap(id);
-        icon = GardenBitmaps.getBitmap("icon1");
+        icon = GardenBitmaps.getBitmap("icon2");
         setBitmapDimen();
-        cWidth = bitmapWidth * 1/3;
+        cWidth = bitmapWidth * 1/2;
         cHeight = cWidth/2;
-        gapX = bitmapWidth/2 - cWidth/2;
+        gapX = bitmapWidth/2 - cWidth;
         gapY = bitmapHeight - cHeight;
     }
 }
