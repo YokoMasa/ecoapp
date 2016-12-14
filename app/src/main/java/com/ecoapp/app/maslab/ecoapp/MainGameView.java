@@ -1,6 +1,7 @@
 package com.ecoapp.app.maslab.ecoapp;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.provider.ContactsContract;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.view.View;
 import com.ecoapp.app.maslab.ecoapp.garden.DataManager;
 import com.ecoapp.app.maslab.ecoapp.garden.Garden;
 import com.ecoapp.app.maslab.ecoapp.garden.GardenItem;
+import com.ecoapp.app.maslab.ecoapp.garden.ThemeMenu;
 
 import java.io.File;
 
@@ -21,20 +23,21 @@ import static com.ecoapp.app.maslab.ecoapp.Paints.*;
  */
 
 public class MainGameView extends View implements
-        Runnable,GameCallback ,View.OnTouchListener,DecorMenu.DecorMenuListener{
+        Runnable,GameCallback ,View.OnTouchListener,DecorMenu.DecorMenuListener,ThemeMenu.ThemeMenuListener{
 
     public static final int SCENE_ON_MAIN = 0;
     public static final int SCENE_ON_MENU = 1;
     public static final int SCENE_ON_DECOR_MENU = 2;
     public static final int SCENE_ON_EDIT_GARDEN = 3;
+    public static final int SCENE_ON_CHOOSE_THEME = 4;
     private int scene;
     private int theme;
     private boolean running;
+    private File saveFile;
     private Garden garden;
     private GameObjectHandler handler;
     private ListMenu achievementMenu;
     private DecorMenu decorMenu;
-
 
     public synchronized boolean isRunning() {
         return running;
@@ -51,7 +54,8 @@ public class MainGameView extends View implements
                 canvas.drawRect(0,0,width,height,Paints.theme1);
                 break;
             default:
-                canvas.drawRect(0,0,width,height,background_white);
+            case 2:
+                canvas.drawRect(0,0,width,height,Paints.theme2);
                 break;
         }
         handler.render(canvas,scene);
@@ -67,25 +71,37 @@ public class MainGameView extends View implements
         decorButton.setGameCallBack(this);
         new LeafIndicator(handler);
 
-        File saveFile = DataManager.getMonthFile(getContext(),DataManager.getyyyyMM());
+        saveFile = DataManager.getMonthFile(getContext(),DataManager.getyyyyMM());
         if(DataManager.getTheme(saveFile) == -1){
-            theme = Garden.THEME_1;
-            garden = new Garden(handler,getContext(),saveFile,Garden.THEME_1);
-            garden.setGameCallBack(this);
+            chooseTheme();
         }else{
             theme = DataManager.getTheme(saveFile);
             garden = new Garden(handler,getContext(),saveFile);
             garden.setGameCallBack(this);
+            scene = SCENE_ON_MAIN;
+            setMenues();
+            start();
         }
+    }
 
+    private void chooseTheme(){
+        ThemeMenu themeMenu = new ThemeMenu(handler);
+        themeMenu.setThemeMenuListener(this);
+        scene = SCENE_ON_CHOOSE_THEME;
+        start();
+    }
+
+    private void setMenues(){
         achievementMenu = new AchievementMenu(handler);
         achievementMenu.setContentHandler(new GameMenuContentHandler());
         achievementMenu.setGameCallback(this);
         decorMenu = new DecorMenu(handler,theme);
         decorMenu.setGameCallback(this);
         decorMenu.setDecorMenuListener(this);
+    }
+
+    private void start(){
         setRunning(true);
-        scene = SCENE_ON_MAIN;
         new Thread(this).start();
     }
 
@@ -177,5 +193,14 @@ public class MainGameView extends View implements
         scene = SCENE_ON_EDIT_GARDEN;
         GardenItem item = DataManager.getGardenItemInstance(theme,id);
         garden.addEdit(item);
+    }
+
+    @Override
+    public void themeChosen(int theme) {
+        this.theme = theme;
+        garden = new Garden(handler,getContext(),saveFile,theme);
+        garden.setGameCallBack(this);
+        scene = SCENE_ON_MAIN;
+        setMenues();
     }
 }

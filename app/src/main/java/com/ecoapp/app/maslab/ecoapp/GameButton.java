@@ -19,9 +19,27 @@ public class GameButton extends GameObject {
     private Paint unpressed;
     private Paint pressed;
     private Paint paint;
+    private Paint tPaint;
     private int width,height;
     private float textX,textY;
     private String text;
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public int getWidth() {
+
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
 
     public void setGameCallback(GameCallback listener){
         this.listener = listener;
@@ -43,10 +61,12 @@ public class GameButton extends GameObject {
                     if (getX() < x && x < getX() + width) {
                         if (getY() < y && y < getY() + height) {
                             paint = pressed;
+                        }else {
+                            paint = unpressed;
                         }
+                    }else {
                         paint = unpressed;
                     }
-                    paint = unpressed;
                 }
                 break;
             case MotionEvent.ACTION_UP:
@@ -68,7 +88,7 @@ public class GameButton extends GameObject {
     public void render(Canvas canvas) {
         canvas.drawRect(getX(),getY(),getX() + width,getY() + height,paint);
         if(text != null){
-            canvas.drawText(text,textX,textY,Paints.button_text);
+            canvas.drawText(text,textX,textY,tPaint);
         }
     }
 
@@ -79,6 +99,8 @@ public class GameButton extends GameObject {
 
     public void setText(String text){
         this.text = text;
+        int textWidth = (int) tPaint.measureText(text);
+        textX = getX() + this.width/2 - textWidth/2;
     }
 
     public void setColor(int color){
@@ -99,17 +121,20 @@ public class GameButton extends GameObject {
         }
     }
 
-    public GameButton(int x,int y,int width,int height,int code,GameObjectHandler handler){
+    public GameButton(int x,int y,int width,int height,int code,int color,GameObjectHandler handler){
         setX(x);setY(y);
+        setColor(color);
         if(handler != null) {
             handler.addGameObject(this);
         }
+        int textSize = width/7;
+        tPaint = new Paint();
+        tPaint.setARGB(255,100,100,100);
+        tPaint.setTextSize(textSize);
         this.width = width;
         this.height = height;
         this.code = code;
-        textX = getX() + width/2;
-        textY = getY() + SizeManager.textSize/2 + height/2;
-        setColor(RED);
+        textY = getY() + textSize/2 + height/2;
         paint = unpressed;
     }
 

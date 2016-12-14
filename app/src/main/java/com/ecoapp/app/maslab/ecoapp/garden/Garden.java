@@ -33,6 +33,7 @@ public class Garden extends GameObject implements GameCallback {
 
     public static final int THEME_1 = 1;
     public static final int THEME_2 = 2;
+    public static final int THEME_VARIATION = 2;
     public static final int SCENE_MAIN = 90;
     public static final int SCENE_EDIT = 91;
     public static final int OK_PRESSED = 63;
@@ -78,6 +79,9 @@ public class Garden extends GameObject implements GameCallback {
 
     @Override
     public void handleEvent(int x, int y, int action) {
+        if(items == null){
+            return;
+        }
         for(int i = 0;i<items.size();i++){
             if(items.get(i).isHandleEventActive(scene)) {
                 items.get(i).handleEvent(x,y,action);
@@ -92,6 +96,9 @@ public class Garden extends GameObject implements GameCallback {
     @Override
     public void render(Canvas canvas) {
         drawBase(canvas);
+        if(items == null){
+            return;
+        }
         for(int i = 0;i<items.size();i++){
             if(items.get(i).isRenderActive(scene)) {
                 items.get(i).render(canvas);
@@ -117,6 +124,9 @@ public class Garden extends GameObject implements GameCallback {
 
     @Override
     public void tick() {
+        if(items == null){
+            return;
+        }
         for(int i = 0;i<items.size();i++){
             if(items.get(i).isTickActive(scene)){
                 items.get(i).tick();

@@ -83,7 +83,11 @@ public class RoundButton extends GameObject {
 
     public void setButtonEnabled(){
         buttonDisabled = false;
-        bitmap = normal;
+        if(buttonPressed){
+            bitmap = pressed;
+        }else{
+            bitmap = normal;
+        }
     }
 
     public RoundButton(int x, int y, Bitmap normal, Bitmap pressed, Bitmap disabled, int returnCode,GameObjectHandler handler) {

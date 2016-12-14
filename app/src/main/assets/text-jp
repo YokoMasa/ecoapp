@@ -11,3 +11,7 @@ achievement5_content=近い距離では電車やバス、自家用車の代わ�
 achievement_dialog_text=本当に達成しましたか？
 achievement_dialog_yes=はい
 achievement_dialog_no=いいえ
+theme_menu_title=今月のテーマを選んでください
+theme1=ベーシック
+theme2=砂漠
+theme_dialog_text=本当にこのテーマでよろしいですか？一度選ぶと次の月まで変えることはできません。

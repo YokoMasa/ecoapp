@@ -5,6 +5,7 @@ import android.graphics.Paint;
 import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
+import android.util.Log;
 import android.view.MotionEvent;
 
 import static com.ecoapp.app.maslab.ecoapp.SizeManager.*;
@@ -88,6 +89,7 @@ public class GameMenuContent extends GameObject {
     public void render(Canvas canvas) {
         canvas.drawRect(getX(),getY(),getX() + this.width,getY() + this.height,Paints.menuContentBack);
         titleY = getY() + menuContentHeight/2 + textSize/2;
+        Log.i("info",Float.toString(textSize));
         canvas.drawText(title,titleX,titleY,Paints.menuContentTitle);
         if(extended) {
             int code = canvas.save();

@@ -50,6 +50,14 @@ public class SizeManager {
     public static int AMCTotalWidth;
     public static int AMCTotalHeight;
     public static int gardenItemSize;
+    public static int themeMenuX,themeMenuY;
+    public static int themeMenuHeight;
+    public static int themeMenuContentSize;
+    public static int themeMenuContentGap;
+    public static int themeMenuContentTextSize;
+    public static int themeMenuContentTextY;
+    public static int themeMenuContentBitmapSize;
+    public static int themeMenuContentPadding;
 
     public static void scaleSize(Point appScreenSize){
         width = appScreenSize.x;
@@ -103,5 +111,16 @@ public class SizeManager {
         AMCTotalWidth = width - listMenuPaddingX*2;
         AMCTotalHeight = height - listMenuPaddingY*2;
         gardenItemSize = height / 7;
+
+        themeMenuContentGap = width/25;
+        themeMenuContentSize = (width - 4*themeMenuContentGap) / 3;
+        themeMenuHeight = themeMenuContentSize + themeMenuContentGap*3 + menuTitleSize;
+        themeMenuX = 0;
+        themeMenuY = height/2 - themeMenuHeight/2;
+        themeMenuContentTextSize = themeMenuContentSize/8;
+        themeMenuContentTextY = themeMenuContentSize - themeMenuContentTextSize/2;
+        themeMenuContentBitmapSize = themeMenuContentSize * 11/16;
+        themeMenuContentPadding = themeMenuContentSize/16;
+
     }
 }

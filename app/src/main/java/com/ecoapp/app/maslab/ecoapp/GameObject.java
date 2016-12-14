@@ -15,15 +15,15 @@ public abstract class GameObject {
     protected int[] tickScenes;
     protected  int[] handleEventScenes;
 
-    protected void setRenderScenes(int[] renderScenes){
+    public  void setRenderScenes(int[] renderScenes){
         this.renderScenes = renderScenes;
     }
 
-    protected void setTickScenes(int[] tickScenes){
+    public  void setTickScenes(int[] tickScenes){
         this.tickScenes = tickScenes;
     }
 
-    protected void setHandleEventScenes(int[] handleEventScenes){
+    public  void setHandleEventScenes(int[] handleEventScenes){
         this.handleEventScenes = handleEventScenes;
     }
 

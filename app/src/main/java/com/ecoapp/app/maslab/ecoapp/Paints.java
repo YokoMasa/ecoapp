@@ -31,6 +31,8 @@ public class Paints {
     public static Paint AMCHowMuchText;
     public static Paint AMCUnPurchasable;
     public static Paint theme1;
+    public static Paint theme2;
+    public static Paint themeMenuContentText;
 
     public static void setPaints(){
         background_white = new Paint();
@@ -86,5 +88,13 @@ public class Paints {
         LinearGradient theme1G = new LinearGradient(SizeManager.width/2,0,SizeManager.width/2,
                 SizeManager.height,Color.argb(255,200,240,255),Color.WHITE, Shader.TileMode.CLAMP);
         theme1.setShader(theme1G);
+        theme2 = new Paint();
+        LinearGradient theme2G = new LinearGradient(SizeManager.width/2,0,SizeManager.width/2,
+                SizeManager.height,Color.argb(255,255,220,163),Color.WHITE, Shader.TileMode.CLAMP);
+        theme2.setShader(theme2G);
+
+        themeMenuContentText = new Paint();
+        themeMenuContentText.setTextSize(SizeManager.themeMenuContentTextSize);
+        themeMenuContentText.setARGB(255,100,100,100);
     }
 }

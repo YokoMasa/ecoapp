@@ -24,6 +24,8 @@ public class Bitmaps {
     public static Bitmap okButtonDisabled;
     public static Bitmap cancelButton;
     public static Bitmap cancelButtonPressed;
+    public static Bitmap theme1;
+    public static Bitmap theme2;
 
     public static void loadBitmaps(Resources resources){
         Bitmap raw = BitmapFactory.decodeResource(resources,R.drawable.add_button);
@@ -49,5 +51,12 @@ public class Bitmaps {
         cancelButton = Bitmap.createScaledBitmap(raw,addButtonSize,addButtonSize,false);
         raw = BitmapFactory.decodeResource(resources,R.drawable.cancel_button_pressed);
         cancelButtonPressed = Bitmap.createScaledBitmap(raw,addButtonSize,addButtonSize,false);
+
+        raw = BitmapFactory.decodeResource(resources,R.drawable.theme1);
+        theme1 = Bitmap.createScaledBitmap(raw,SizeManager.themeMenuContentBitmapSize,SizeManager.themeMenuContentBitmapSize,false);
+        raw = BitmapFactory.decodeResource(resources,R.drawable.theme2);
+        theme2 = Bitmap.createScaledBitmap(raw,SizeManager.themeMenuContentBitmapSize,SizeManager.themeMenuContentBitmapSize,false);
+
+
     }
 }
