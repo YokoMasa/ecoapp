@@ -58,6 +58,12 @@ public class SizeManager {
     public static int themeMenuContentTextY;
     public static int themeMenuContentBitmapSize;
     public static int themeMenuContentPadding;
+    public static int editMenuHeight;
+    public static int editMenuY;
+    public static int editMenuContentSize;
+    public static int editMenuContentGap;
+    public static int editMenuContentIconPadding;
+    public static int editMenuVel;
 
     public static void scaleSize(Point appScreenSize){
         width = appScreenSize.x;
@@ -121,6 +127,14 @@ public class SizeManager {
         themeMenuContentTextY = themeMenuContentSize - themeMenuContentTextSize/2;
         themeMenuContentBitmapSize = themeMenuContentSize * 11/16;
         themeMenuContentPadding = themeMenuContentSize/16;
+
+        editMenuContentSize = itemIconSize * 7/5;
+        editMenuContentIconPadding = editMenuContentSize/2 - itemIconSize/2;
+        editMenuContentGap = editMenuContentSize/6;
+        editMenuHeight = editMenuContentSize + editMenuContentGap*2;
+        editMenuY = height - editMenuHeight;
+        editMenuVel = editMenuHeight/10;
+
 
     }
 }

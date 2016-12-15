@@ -24,6 +24,7 @@ public class Bitmaps {
     public static Bitmap okButtonDisabled;
     public static Bitmap cancelButton;
     public static Bitmap cancelButtonPressed;
+    public static Bitmap editMenuCrossButton;
     public static Bitmap theme1;
     public static Bitmap theme2;
 
@@ -34,6 +35,7 @@ public class Bitmaps {
         addButtonPressed = Bitmap.createScaledBitmap(raw,addButtonSize,addButtonSize,false);
         raw = BitmapFactory.decodeResource(resources,R.drawable.cross_button);
         crossButton = Bitmap.createScaledBitmap(raw,crossButtonSize,crossButtonSize,false);
+        editMenuCrossButton = Bitmap.createScaledBitmap(raw,editMenuContentGap,editMenuContentGap,false);
         raw = BitmapFactory.decodeResource(resources,R.drawable.decor_button);
         decorButton = Bitmap.createScaledBitmap(raw,decorButtonSize,decorButtonSize,false);
         raw = BitmapFactory.decodeResource(resources,R.drawable.decor_button_pressed);

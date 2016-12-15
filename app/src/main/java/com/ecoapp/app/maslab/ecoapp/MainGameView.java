@@ -9,6 +9,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.ecoapp.app.maslab.ecoapp.garden.DataManager;
+import com.ecoapp.app.maslab.ecoapp.garden.EditMenu;
 import com.ecoapp.app.maslab.ecoapp.garden.Garden;
 import com.ecoapp.app.maslab.ecoapp.garden.GardenItem;
 import com.ecoapp.app.maslab.ecoapp.garden.ThemeMenu;
@@ -30,6 +31,7 @@ public class MainGameView extends View implements
     public static final int SCENE_ON_DECOR_MENU = 2;
     public static final int SCENE_ON_EDIT_GARDEN = 3;
     public static final int SCENE_ON_CHOOSE_THEME = 4;
+    public static final int SCENE_ON_KEEP_EDIT_MENU = 5;
     private int scene;
     private int theme;
     private boolean running;
@@ -38,6 +40,7 @@ public class MainGameView extends View implements
     private GameObjectHandler handler;
     private ListMenu achievementMenu;
     private DecorMenu decorMenu;
+    private EditMenu editMenu;
 
     public synchronized boolean isRunning() {
         return running;
@@ -98,6 +101,7 @@ public class MainGameView extends View implements
         decorMenu = new DecorMenu(handler,theme);
         decorMenu.setGameCallback(this);
         decorMenu.setDecorMenuListener(this);
+        editMenu = new EditMenu(handler,garden.getItems(),this);
     }
 
     private void start(){
@@ -183,6 +187,13 @@ public class MainGameView extends View implements
                 break;
             case Garden.EDIT_END:
                 scene = SCENE_ON_DECOR_MENU;
+                break;
+            case Garden.KEEP_EDIT_START:
+                scene = SCENE_ON_KEEP_EDIT_MENU;
+                editMenu.show();
+                break;
+            case EditMenu.EDIT_MENU_FADED:
+                scene = SCENE_ON_MAIN;
                 break;
         }
 

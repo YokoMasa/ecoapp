@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.Log;
+import android.view.MotionEvent;
 
 import com.ecoapp.app.maslab.ecoapp.Bitmaps;
 import com.ecoapp.app.maslab.ecoapp.GameCallback;
@@ -36,9 +37,11 @@ public class Garden extends GameObject implements GameCallback {
     public static final int THEME_VARIATION = 2;
     public static final int SCENE_MAIN = 90;
     public static final int SCENE_EDIT = 91;
+    public static final int SCENE_KEEP_EDIT = 87;
     public static final int OK_PRESSED = 63;
     public static final int CANCEL_PRESSED = 37;
     public static final int EDIT_END = 126;
+    public static final int KEEP_EDIT_START = 532;
     private final double A = (Math.sqrt(2)/2)/(Math.sqrt(41/8));
     private final float baseBottom = (float) (baseSize * Math.sqrt(2)/2) + middleY;
     private List<GardenItem> items;
@@ -55,6 +58,10 @@ public class Garden extends GameObject implements GameCallback {
 
     public void setGameCallBack(GameCallback listener){
         this.listener = listener;
+    }
+
+    public List<GardenItem> getItems(){
+        return items;
     }
 
     public void addGardenItem(GardenItem item){
@@ -77,6 +84,10 @@ public class Garden extends GameObject implements GameCallback {
         scene = SCENE_EDIT;
     }
 
+    public void keepEdit(GardenItem item){
+
+    }
+
     @Override
     public int compareTo(Object o) {
         return 0;
@@ -92,9 +103,13 @@ public class Garden extends GameObject implements GameCallback {
                 items.get(i).handleEvent(x,y,action);
             }
         }
-        if(scene == SCENE_EDIT){
+        if(scene == SCENE_EDIT && scene == SCENE_KEEP_EDIT){
             ok.handleEvent(x,y,action);
             cancel.handleEvent(x,y,action);
+        }
+        if(checkIfPointInBase(x,y) == 1 && action == MotionEvent.ACTION_DOWN){
+            listener.gameCallBack(KEEP_EDIT_START);
+            scene = SCENE_KEEP_EDIT;
         }
     }
 
@@ -109,7 +124,7 @@ public class Garden extends GameObject implements GameCallback {
                 items.get(i).render(canvas);
             }
         }
-        if(scene == SCENE_EDIT){
+        if(scene == SCENE_EDIT && scene == SCENE_KEEP_EDIT){
             ok.render(canvas);
             cancel.render(canvas);
             if(testClip != null) {
@@ -231,19 +246,27 @@ public class Garden extends GameObject implements GameCallback {
     public void gameCallBack(int code) {
         switch(code){
             case OK_PRESSED:
-                editingItem.setActiveHandleEvent(new int[]{GameObject.DONT_HANDLE});
-                save();
-                int howMuch = DataManager.getGardenItemCost(theme,editingItem.getId());
-                LeafIndicator.leaves -= howMuch;
-                editingItem = null;
-                scene = SCENE_MAIN;
-                listener.gameCallBack(EDIT_END);
+                if(scene == SCENE_EDIT) {
+                    editingItem.setActiveHandleEvent(new int[]{GameObject.DONT_HANDLE});
+                    save();
+                    int howMuch = DataManager.getGardenItemCost(theme, editingItem.getId());
+                    LeafIndicator.leaves -= howMuch;
+                    editingItem = null;
+                    scene = SCENE_MAIN;
+                    listener.gameCallBack(EDIT_END);
+                }else{
+
+                }
                 break;
             case CANCEL_PRESSED:
-                items.remove(editingItem);
-                editingItem = null;
-                scene = SCENE_MAIN;
-                listener.gameCallBack(EDIT_END);
+                if(scene == SCENE_EDIT) {
+                    items.remove(editingItem);
+                    editingItem = null;
+                    scene = SCENE_MAIN;
+                    listener.gameCallBack(EDIT_END);
+                }else{
+
+                }
                 break;
         }
     }

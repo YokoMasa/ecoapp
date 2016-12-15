@@ -11,11 +11,16 @@ import java.util.Comparator;
 public abstract class GameObject implements Comparable{
 
     public static final int DONT_HANDLE = 325849;
+    protected GameCallback listener;
     protected float x,y;
     protected float cx,cy;
     protected int[] renderScenes;
     protected int[] tickScenes;
     protected  int[] handleEventScenes;
+
+    public void setGameCallback(GameCallback listener){
+        this.listener = listener;
+    }
 
     public  void setRenderScenes(int[] renderScenes){
         this.renderScenes = renderScenes;
