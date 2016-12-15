@@ -8,11 +8,13 @@ import android.view.MotionEvent;
 
 import com.ecoapp.app.maslab.ecoapp.Bitmaps;
 import com.ecoapp.app.maslab.ecoapp.GameCallback;
+import com.ecoapp.app.maslab.ecoapp.GameDialog;
 import com.ecoapp.app.maslab.ecoapp.GameObject;
 import com.ecoapp.app.maslab.ecoapp.GameObjectHandler;
 import com.ecoapp.app.maslab.ecoapp.LeafIndicator;
 import com.ecoapp.app.maslab.ecoapp.MainGameView;
 import com.ecoapp.app.maslab.ecoapp.Paints;
+import com.ecoapp.app.maslab.ecoapp.Texts;
 
 import java.io.File;
 import java.util.Collections;
@@ -23,6 +25,7 @@ import static com.ecoapp.app.maslab.ecoapp.SizeManager.addButtonY;
 import static com.ecoapp.app.maslab.ecoapp.SizeManager.baseSize;
 import static com.ecoapp.app.maslab.ecoapp.SizeManager.decorButtonX;
 import static com.ecoapp.app.maslab.ecoapp.SizeManager.decorButtonY;
+import static com.ecoapp.app.maslab.ecoapp.SizeManager.disposeButtonX;
 import static com.ecoapp.app.maslab.ecoapp.SizeManager.middleX;
 import static com.ecoapp.app.maslab.ecoapp.SizeManager.middleY;
 
@@ -35,24 +38,35 @@ public class Garden extends GameObject implements GameCallback {
     public static final int THEME_1 = 1;
     public static final int THEME_2 = 2;
     public static final int THEME_VARIATION = 2;
+
     public static final int SCENE_MAIN = 90;
     public static final int SCENE_EDIT = 91;
-    public static final int SCENE_KEEP_EDIT = 87;
+    public static final int SCENE_KEEP_EDIT = 811;
+    public static final int SCENE_KEEP_EDIT_MENU = 87;
+    public static final int SCENE_SHOWING_DIALOG = 622;
+
     public static final int OK_PRESSED = 63;
     public static final int CANCEL_PRESSED = 37;
+    public static final int DISPOSE_PRESSED = 444;
     public static final int EDIT_END = 126;
+    public static final int KEEP_EDIT_END = 25;
     public static final int KEEP_EDIT_START = 532;
+    public static final int KEEP_EDIT_MENU = 399;
+
     private final double A = (Math.sqrt(2)/2)/(Math.sqrt(41/8));
     private final float baseBottom = (float) (baseSize * Math.sqrt(2)/2) + middleY;
     private List<GardenItem> items;
     private int scene;
     private int theme;
+    private int editItemX,editItemY;
     private Paint basePaint;
     private File savePath;
     private GardenItem editingItem;
     private RoundButton ok;
     private RoundButton cancel;
+    private RoundButton dispose;
     private GameCallback listener;
+    private GameObjectHandler handler;
 
     private float[] testClip;
 
@@ -85,7 +99,13 @@ public class Garden extends GameObject implements GameCallback {
     }
 
     public void keepEdit(GardenItem item){
-
+        scene = SCENE_KEEP_EDIT;
+        editingItem = item;
+        editItemX = (int) item.getCx();
+        editItemY = (int) item.getCy();
+        items.remove(item);
+        items.add(item);
+        item.setActiveHandleEvent(new int[]{SCENE_KEEP_EDIT});
     }
 
     @Override
@@ -95,6 +115,7 @@ public class Garden extends GameObject implements GameCallback {
 
     @Override
     public void handleEvent(int x, int y, int action) {
+        handler.handleEvent(x,y,action,scene);
         if(items == null){
             return;
         }
@@ -103,13 +124,21 @@ public class Garden extends GameObject implements GameCallback {
                 items.get(i).handleEvent(x,y,action);
             }
         }
-        if(scene == SCENE_EDIT && scene == SCENE_KEEP_EDIT){
+        if(scene == SCENE_EDIT || scene == SCENE_KEEP_EDIT){
             ok.handleEvent(x,y,action);
             cancel.handleEvent(x,y,action);
         }
+        if(scene == SCENE_KEEP_EDIT){
+            dispose.handleEvent(x,y,action);
+        }
         if(checkIfPointInBase(x,y) == 1 && action == MotionEvent.ACTION_DOWN){
-            listener.gameCallBack(KEEP_EDIT_START);
-            scene = SCENE_KEEP_EDIT;
+            if(scene == SCENE_MAIN) {
+                listener.gameCallBack(KEEP_EDIT_START);
+                scene = SCENE_KEEP_EDIT_MENU;
+            }else if(scene == SCENE_KEEP_EDIT_MENU){
+                listener.gameCallBack(KEEP_EDIT_END);
+                scene = SCENE_MAIN;
+            }
         }
     }
 
@@ -124,13 +153,17 @@ public class Garden extends GameObject implements GameCallback {
                 items.get(i).render(canvas);
             }
         }
-        if(scene == SCENE_EDIT && scene == SCENE_KEEP_EDIT){
+        if(scene == SCENE_EDIT || scene == SCENE_KEEP_EDIT || scene == SCENE_SHOWING_DIALOG){
             ok.render(canvas);
             cancel.render(canvas);
             if(testClip != null) {
                 //canvas.drawLine(editingItem.getCx(), testClip[1], editingItem.getCx(), testClip[0], Paints.AMCUnPurchasable);
             }
         }
+        if(scene == SCENE_KEEP_EDIT || scene == SCENE_SHOWING_DIALOG){
+            dispose.render(canvas);
+        }
+        handler.render(canvas,scene);
     }
 
     private void drawBase(Canvas canvas){
@@ -144,6 +177,7 @@ public class Garden extends GameObject implements GameCallback {
 
     @Override
     public void tick() {
+        handler.tick(scene);
         if(items == null){
             return;
         }
@@ -154,17 +188,21 @@ public class Garden extends GameObject implements GameCallback {
         }
         ok.tick();
         cancel.tick();
-        if(scene == SCENE_EDIT){
+        dispose.tick();
+        if(scene == SCENE_EDIT || scene == SCENE_KEEP_EDIT){
             if(checkIfInBase(editingItem)){
                 ok.setButtonEnabled();
             }else{
                 ok.setButtonDisabled();
             }
-            testClip = getClip(editingItem.getCx());
+            //testClip = getClip(editingItem.getCx());
         }
     }
 
     private boolean checkIfInBase(GardenItem item){
+        if(item == null){
+            return false;
+        }
         float left = item.getCx();
         float top = item.getCy();
         float right = left + item.getcWidth();
@@ -220,14 +258,21 @@ public class Garden extends GameObject implements GameCallback {
 
     private void init(){
         setPaint();
-        setHandleEventScenes(new int[]{MainGameView.SCENE_ON_MAIN,MainGameView.SCENE_ON_EDIT_GARDEN});
+        setHandleEventScenes(new int[]{MainGameView.SCENE_ON_MAIN,MainGameView.SCENE_ON_KEEP_EDIT_MENU,MainGameView.SCENE_ON_KEEP_EDIT,MainGameView.SCENE_ON_EDIT_GARDEN});
         items = DataManager.loadGardenData(savePath);
         DataManager.getTheme(savePath);
         scene = SCENE_MAIN;
+        handler = new GameObjectHandler();
         ok = new RoundButton(addButtonX,addButtonY, Bitmaps.okButton,Bitmaps.okButtonPressed,Bitmaps.okButtonDisabled,OK_PRESSED,null);
         ok.setGameCallBack(this);
         cancel = new RoundButton(decorButtonX,decorButtonY,Bitmaps.cancelButton,Bitmaps.cancelButtonPressed,null,CANCEL_PRESSED,null);
         cancel.setGameCallBack(this);
+        dispose = new RoundButton(disposeButtonX,addButtonY,Bitmaps.dispose,Bitmaps.disposePressed,null,DISPOSE_PRESSED,null);
+        dispose.setGameCallBack(this);
+        GameDialog dialog = new GameDialog(handler, Texts.getText("edit_dialog_text"));
+        dialog.setRenderScenes(new int[]{SCENE_SHOWING_DIALOG});
+        dialog.setHandleEventScenes(new int[]{SCENE_SHOWING_DIALOG});
+        dialog.setGameCallback(this);
     };
 
     private void setPaint(){
@@ -255,7 +300,11 @@ public class Garden extends GameObject implements GameCallback {
                     scene = SCENE_MAIN;
                     listener.gameCallBack(EDIT_END);
                 }else{
-
+                    editingItem.setActiveHandleEvent(new int[]{GameObject.DONT_HANDLE});
+                    save();
+                    editingItem = null;
+                    scene = SCENE_KEEP_EDIT_MENU;
+                    listener.gameCallBack(KEEP_EDIT_MENU);
                 }
                 break;
             case CANCEL_PRESSED:
@@ -265,8 +314,27 @@ public class Garden extends GameObject implements GameCallback {
                     scene = SCENE_MAIN;
                     listener.gameCallBack(EDIT_END);
                 }else{
-
+                    editingItem.setCx(editItemX);
+                    editingItem.setCy(editItemY);
+                    editingItem.setActiveHandleEvent(new int[]{GameObject.DONT_HANDLE});
+                    editingItem = null;
+                    save();
+                    scene = SCENE_KEEP_EDIT_MENU;
+                    listener.gameCallBack(KEEP_EDIT_MENU);
                 }
+                break;
+            case DISPOSE_PRESSED:
+                scene = SCENE_SHOWING_DIALOG;
+                break;
+            case GameDialog.YES:
+                items.remove(editingItem);
+                save();
+                editingItem = null;
+                scene = SCENE_KEEP_EDIT_MENU;
+                listener.gameCallBack(KEEP_EDIT_MENU);
+                break;
+            case GameDialog.NO:
+                scene = SCENE_KEEP_EDIT;
                 break;
         }
     }

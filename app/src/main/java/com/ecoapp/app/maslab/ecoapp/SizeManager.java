@@ -62,8 +62,8 @@ public class SizeManager {
     public static int editMenuY;
     public static int editMenuContentSize;
     public static int editMenuContentGap;
-    public static int editMenuContentIconPadding;
     public static int editMenuVel;
+    public static int disposeButtonX;
 
     public static void scaleSize(Point appScreenSize){
         width = appScreenSize.x;
@@ -129,11 +129,11 @@ public class SizeManager {
         themeMenuContentPadding = themeMenuContentSize/16;
 
         editMenuContentSize = itemIconSize * 7/5;
-        editMenuContentIconPadding = editMenuContentSize/2 - itemIconSize/2;
         editMenuContentGap = editMenuContentSize/6;
         editMenuHeight = editMenuContentSize + editMenuContentGap*2;
         editMenuY = height - editMenuHeight;
         editMenuVel = editMenuHeight/10;
+        disposeButtonX = width/2 - addButtonSize/2;
 
 
     }

@@ -72,7 +72,7 @@ public class AddButton extends GameObject {
     public AddButton(GameObjectHandler handler){
         handler.addGameObject(this);
         setHandleEventScenes(new int[]{MainGameView.SCENE_ON_MAIN});
-        setRenderScenes(new int[]{MainGameView.SCENE_ON_MAIN,MainGameView.SCENE_ON_MENU,MainGameView.SCENE_ON_DECOR_MENU});
+        setRenderScenes(new int[]{MainGameView.SCENE_ON_MAIN,MainGameView.SCENE_ON_MENU,MainGameView.SCENE_ON_DECOR_MENU,MainGameView.SCENE_ON_KEEP_EDIT_MENU});
         middleX = SizeManager.addButtonX + SizeManager.addButtonSize/2;
         middleY = SizeManager.addButtonY + SizeManager.addButtonSize/2;
         radious = SizeManager.addButtonSize / 2;

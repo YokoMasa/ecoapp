@@ -25,6 +25,8 @@ public class Bitmaps {
     public static Bitmap cancelButton;
     public static Bitmap cancelButtonPressed;
     public static Bitmap editMenuCrossButton;
+    public static Bitmap dispose;
+    public static Bitmap disposePressed;
     public static Bitmap theme1;
     public static Bitmap theme2;
 
@@ -58,6 +60,11 @@ public class Bitmaps {
         theme1 = Bitmap.createScaledBitmap(raw,SizeManager.themeMenuContentBitmapSize,SizeManager.themeMenuContentBitmapSize,false);
         raw = BitmapFactory.decodeResource(resources,R.drawable.theme2);
         theme2 = Bitmap.createScaledBitmap(raw,SizeManager.themeMenuContentBitmapSize,SizeManager.themeMenuContentBitmapSize,false);
+
+        raw = BitmapFactory.decodeResource(resources,R.drawable.dispose);
+        dispose = Bitmap.createScaledBitmap(raw,addButtonSize,addButtonSize,false);
+        raw = BitmapFactory.decodeResource(resources,R.drawable.dispose_pressed);
+        disposePressed = Bitmap.createScaledBitmap(raw,addButtonSize,addButtonSize,false);
 
 
     }

@@ -24,7 +24,7 @@ import static com.ecoapp.app.maslab.ecoapp.Paints.*;
  */
 
 public class MainGameView extends View implements
-        Runnable,GameCallback ,View.OnTouchListener,DecorMenu.DecorMenuListener,ThemeMenu.ThemeMenuListener{
+        Runnable,GameCallback ,View.OnTouchListener,DecorMenu.DecorMenuListener,ThemeMenu.ThemeMenuListener,EditMenu.EditMenuListener{
 
     public static final int SCENE_ON_MAIN = 0;
     public static final int SCENE_ON_MENU = 1;
@@ -32,6 +32,7 @@ public class MainGameView extends View implements
     public static final int SCENE_ON_EDIT_GARDEN = 3;
     public static final int SCENE_ON_CHOOSE_THEME = 4;
     public static final int SCENE_ON_KEEP_EDIT_MENU = 5;
+    public static final int SCENE_ON_KEEP_EDIT = 6;
     private int scene;
     private int theme;
     private boolean running;
@@ -102,6 +103,7 @@ public class MainGameView extends View implements
         decorMenu.setGameCallback(this);
         decorMenu.setDecorMenuListener(this);
         editMenu = new EditMenu(handler,garden.getItems(),this);
+        editMenu.setEditMenuListener(this);
     }
 
     private void start(){
@@ -192,6 +194,12 @@ public class MainGameView extends View implements
                 scene = SCENE_ON_KEEP_EDIT_MENU;
                 editMenu.show();
                 break;
+            case Garden.KEEP_EDIT_MENU:
+                scene = SCENE_ON_KEEP_EDIT_MENU;
+                break;
+            case Garden.KEEP_EDIT_END:
+                editMenu.fade();
+                break;
             case EditMenu.EDIT_MENU_FADED:
                 scene = SCENE_ON_MAIN;
                 break;
@@ -204,6 +212,12 @@ public class MainGameView extends View implements
         scene = SCENE_ON_EDIT_GARDEN;
         GardenItem item = DataManager.getGardenItemInstance(theme,id);
         garden.addEdit(item);
+    }
+
+    @Override
+    public void keepEditStart(GardenItem item) {
+        scene = SCENE_ON_KEEP_EDIT;
+        garden.keepEdit(item);
     }
 
     @Override
