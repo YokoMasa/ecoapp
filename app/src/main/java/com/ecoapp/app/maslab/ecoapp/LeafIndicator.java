@@ -39,7 +39,7 @@ public class LeafIndicator extends GameObject {
         textX = getX() + Bitmaps.leaf.getWidth();
         textY = getY() + Bitmaps.leaf.getHeight()/2 + SizeManager.textSize/2;
         handler.addGameObject(this);
-        leaves = 1000;
+        leaves = 100;
         leavesShowing = leaves;
     }
 }
