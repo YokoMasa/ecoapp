@@ -3,7 +3,10 @@ package com.ecoapp.app.maslab.ecoapp;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.Shader;
+
+import com.ecoapp.app.maslab.ecoapp.garden.GardenItem;
 
 /**
  * Created by masato on 2016/12/06.
@@ -96,5 +99,42 @@ public class Paints {
         themeMenuContentText = new Paint();
         themeMenuContentText.setTextSize(SizeManager.themeMenuContentTextSize);
         themeMenuContentText.setARGB(255,100,100,100);
+    }
+
+    public static Path getEditMark(GardenItem item){
+        int x = (int) item.getBitmapX();
+        int y = (int) item.getBitmapY();
+        int width = item.getBitmapWidth();
+        int height = item.getBitmapHeight();
+        int size = SizeManager.editMarkSize;
+        int sx = x + width/2;
+        int sy = y - size;
+
+        Path path = new Path();
+        path.moveTo(sx,sy);
+        path.lineTo(sx - size/2,y);
+        path.lineTo(sx + size/2,y);
+        path.lineTo(sx,sy);
+
+        sy = y + height + size;
+        path.moveTo(sx,sy);
+        path.lineTo(sx - size/2,sy - size);
+        path.lineTo(sx + size/2,sy - size);
+        path.lineTo(sx,sy);
+
+        sx = x - size;
+        sy = y + height/2;
+        path.moveTo(sx,sy);
+        path.lineTo(sx + size,sy - size/2);
+        path.lineTo(sx + size,sy + size/2);
+        path.lineTo(sx,sy);
+
+        sx = x + width + size;
+        path.moveTo(sx,sy);
+        path.lineTo(sx - size,sy - size/2);
+        path.lineTo(sx - size,sy + size/2);
+        path.lineTo(sx,sy);
+
+        return path;
     }
 }

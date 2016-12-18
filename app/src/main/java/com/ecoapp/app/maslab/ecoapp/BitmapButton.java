@@ -69,7 +69,9 @@ public class BitmapButton extends GameObject {
     }
 
     public BitmapButton(GameObjectHandler handler,int x,int y,Bitmap pressed,Bitmap unPressed,GameCallback listener,int code) {
-        handler.addGameObject(this);
+        if(handler != null) {
+            handler.addGameObject(this);
+        }
         this.code = code;
         this.pressed = pressed;
         this.unPressed = unPressed;

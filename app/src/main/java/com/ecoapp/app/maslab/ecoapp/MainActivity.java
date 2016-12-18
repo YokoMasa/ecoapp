@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.ecoapp.app.maslab.ecoapp.pastdata.PastFragment;
+
 public class MainActivity extends AppCompatActivity implements FragmentHandler {
 
     @Override
@@ -24,6 +26,12 @@ public class MainActivity extends AppCompatActivity implements FragmentHandler {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         switch(code){
             case FragmentHandler.EXIT_ENTRANCE:
+                //MainGameFragment mainGameFragment = new MainGameFragment();
+                //ft.replace(R.id.mother,mainGameFragment);
+                PastFragment pastFragment = new PastFragment();
+                ft.replace(R.id.mother,pastFragment);
+                break;
+            case FragmentHandler.BACK_TO_MAIN:
                 MainGameFragment mainGameFragment = new MainGameFragment();
                 ft.replace(R.id.mother,mainGameFragment);
                 break;

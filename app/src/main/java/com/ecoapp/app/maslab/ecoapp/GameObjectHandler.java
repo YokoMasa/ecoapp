@@ -54,4 +54,8 @@ public class GameObjectHandler{
     public void removeAll(){
         gameObjects.clear();
     }
+
+    public int getCount(){
+        return gameObjects.size();
+    }
 }

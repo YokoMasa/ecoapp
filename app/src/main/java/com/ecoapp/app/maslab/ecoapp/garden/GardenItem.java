@@ -24,15 +24,38 @@ public abstract class GardenItem extends GameObject implements  Comparable{
     protected Bitmap icon;
 
     private boolean touched;
+    private boolean editing;
 
     public String getId() {
         return id;
+    }
+
+    public int getBitmapWidth() {
+        return bitmapWidth;
+    }
+
+    public int getBitmapHeight() { return bitmapHeight; }
+
+    public float getBitmapY() {
+        return bitmapY;
+    }
+
+    public float getBitmapX() {
+
+        return bitmapX;
+    }
+
+    public void setEditing(boolean editing){
+        this.editing = editing;
     }
 
     @Override
     public void render(Canvas canvas) {
         convertIntoBitmapXY();
         canvas.drawBitmap(mainBitmap,bitmapX,bitmapY,null);
+        if(editing){
+            canvas.drawPath(Paints.getEditMark(this),Paints.button_B_pressed);
+        }
         //canvas.drawRect(cx,cy,cx + cWidth,cy + cHeight, Paints.AMCUnPurchasable);
     }
 

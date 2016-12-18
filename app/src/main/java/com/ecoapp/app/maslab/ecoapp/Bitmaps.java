@@ -27,6 +27,8 @@ public class Bitmaps {
     public static Bitmap editMenuCrossButton;
     public static Bitmap dispose;
     public static Bitmap disposePressed;
+    public static Bitmap back;
+    public static Bitmap backPressed;
     public static Bitmap theme1;
     public static Bitmap theme2;
 
@@ -65,6 +67,11 @@ public class Bitmaps {
         dispose = Bitmap.createScaledBitmap(raw,addButtonSize,addButtonSize,false);
         raw = BitmapFactory.decodeResource(resources,R.drawable.dispose_pressed);
         disposePressed = Bitmap.createScaledBitmap(raw,addButtonSize,addButtonSize,false);
+
+        raw = BitmapFactory.decodeResource(resources,R.drawable.back_button);
+        back = Bitmap.createScaledBitmap(raw,crossButtonSize * 8/5,crossButtonSize,false);
+        raw = BitmapFactory.decodeResource(resources,R.drawable.back_button_pressed);
+        backPressed = Bitmap.createScaledBitmap(raw,crossButtonSize * 8/5,crossButtonSize,false);
 
 
     }

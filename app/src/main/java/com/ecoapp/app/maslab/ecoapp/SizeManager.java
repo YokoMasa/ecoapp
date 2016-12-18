@@ -64,6 +64,7 @@ public class SizeManager {
     public static int editMenuContentGap;
     public static int editMenuVel;
     public static int disposeButtonX;
+    public static int editMarkSize;
 
     public static void scaleSize(Point appScreenSize){
         width = appScreenSize.x;
@@ -134,6 +135,8 @@ public class SizeManager {
         editMenuY = height - editMenuHeight;
         editMenuVel = editMenuHeight/10;
         disposeButtonX = width/2 - addButtonSize/2;
+
+        editMarkSize = width/20;
 
 
     }

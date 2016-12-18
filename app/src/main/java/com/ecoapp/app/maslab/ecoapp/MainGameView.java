@@ -51,6 +51,8 @@ public class MainGameView extends View implements
         this.running = running;
     }
 
+
+
     @Override
     protected void onDraw(Canvas canvas) {
         switch(theme){
@@ -80,7 +82,7 @@ public class MainGameView extends View implements
             chooseTheme();
         }else{
             theme = DataManager.getTheme(saveFile);
-            garden = new Garden(handler,getContext(),saveFile);
+            garden = new Garden(handler,getContext(),saveFile,false);
             garden.setGameCallBack(this);
             scene = SCENE_ON_MAIN;
             setMenues();

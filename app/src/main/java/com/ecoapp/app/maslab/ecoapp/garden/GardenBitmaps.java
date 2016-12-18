@@ -67,7 +67,7 @@ public class GardenBitmaps {
             if(is != null){
                 try{
                     is.close();
-                    assetManager.close();
+                    //assetManager.close();
                 }catch(IOException e){
                     e.printStackTrace();
                 }
