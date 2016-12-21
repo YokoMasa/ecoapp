@@ -13,6 +13,7 @@ import com.ecoapp.app.maslab.ecoapp.garden.EditMenu;
 import com.ecoapp.app.maslab.ecoapp.garden.Garden;
 import com.ecoapp.app.maslab.ecoapp.garden.GardenItem;
 import com.ecoapp.app.maslab.ecoapp.garden.ThemeMenu;
+import com.ecoapp.app.maslab.ecoapp.settings.SettingMenu;
 
 import java.io.File;
 
@@ -33,14 +34,18 @@ public class MainGameView extends View implements
     public static final int SCENE_ON_CHOOSE_THEME = 4;
     public static final int SCENE_ON_KEEP_EDIT_MENU = 5;
     public static final int SCENE_ON_KEEP_EDIT = 6;
+    public static final int SCENE_ON_SETTING_MENU = 7;
+    private final int SETTING_PRESSED = 298374;
     private int scene;
     private int theme;
     private boolean running;
     private File saveFile;
     private Garden garden;
     private GameObjectHandler handler;
+    private BitmapButton settingButton;
     private ListMenu achievementMenu;
     private DecorMenu decorMenu;
+    private SettingMenu settingMenu;
     private EditMenu editMenu;
 
     public synchronized boolean isRunning() {
@@ -98,12 +103,16 @@ public class MainGameView extends View implements
     }
 
     private void setMenues(){
+        settingButton = new BitmapButton(handler,width - leafIndicatorX - crossButtonSize,leafIndicatorY,Bitmaps.settingPressed,Bitmaps.setting,this,SETTING_PRESSED);
+        settingButton.setHandleEventScenes(new int[]{SCENE_ON_MAIN});
         achievementMenu = new AchievementMenu(handler);
         achievementMenu.setContentHandler(new GameMenuContentHandler());
         achievementMenu.setGameCallback(this);
         decorMenu = new DecorMenu(handler,theme);
         decorMenu.setGameCallback(this);
         decorMenu.setDecorMenuListener(this);
+        settingMenu = new SettingMenu(handler);
+        settingMenu.setGameCallback(this);
         editMenu = new EditMenu(handler,garden.getItems(),this);
         editMenu.setEditMenuListener(this);
     }
@@ -203,6 +212,13 @@ public class MainGameView extends View implements
                 editMenu.fade();
                 break;
             case EditMenu.EDIT_MENU_FADED:
+                scene = SCENE_ON_MAIN;
+                break;
+            case SETTING_PRESSED:
+                scene = SCENE_ON_SETTING_MENU;
+                settingMenu.show();
+                break;
+            case SettingMenu.MENU_FADED:
                 scene = SCENE_ON_MAIN;
                 break;
         }

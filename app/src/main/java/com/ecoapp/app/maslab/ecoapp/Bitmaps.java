@@ -29,6 +29,8 @@ public class Bitmaps {
     public static Bitmap disposePressed;
     public static Bitmap back;
     public static Bitmap backPressed;
+    public static Bitmap setting;
+    public static Bitmap settingPressed;
     public static Bitmap theme1;
     public static Bitmap theme2;
 
@@ -72,6 +74,11 @@ public class Bitmaps {
         back = Bitmap.createScaledBitmap(raw,crossButtonSize * 8/5,crossButtonSize,false);
         raw = BitmapFactory.decodeResource(resources,R.drawable.back_button_pressed);
         backPressed = Bitmap.createScaledBitmap(raw,crossButtonSize * 8/5,crossButtonSize,false);
+
+        raw = BitmapFactory.decodeResource(resources,R.drawable.setting_button);
+        setting = Bitmap.createScaledBitmap(raw,crossButtonSize,crossButtonSize,false);
+        raw = BitmapFactory.decodeResource(resources,R.drawable.setting_button_pressed);
+        settingPressed = Bitmap.createScaledBitmap(raw,crossButtonSize,crossButtonSize,false);
 
 
     }
