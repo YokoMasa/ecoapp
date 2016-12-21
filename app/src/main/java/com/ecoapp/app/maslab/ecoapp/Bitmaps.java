@@ -33,6 +33,7 @@ public class Bitmaps {
     public static Bitmap settingPressed;
     public static Bitmap theme1;
     public static Bitmap theme2;
+    public static Bitmap theme3;
 
     public static void loadBitmaps(Resources resources){
         Bitmap raw = BitmapFactory.decodeResource(resources,R.drawable.add_button);
@@ -64,6 +65,8 @@ public class Bitmaps {
         theme1 = Bitmap.createScaledBitmap(raw,SizeManager.themeMenuContentBitmapSize,SizeManager.themeMenuContentBitmapSize,false);
         raw = BitmapFactory.decodeResource(resources,R.drawable.theme2);
         theme2 = Bitmap.createScaledBitmap(raw,SizeManager.themeMenuContentBitmapSize,SizeManager.themeMenuContentBitmapSize,false);
+        raw = BitmapFactory.decodeResource(resources,R.drawable.theme3);
+        theme3 = Bitmap.createScaledBitmap(raw,SizeManager.themeMenuContentBitmapSize,SizeManager.themeMenuContentBitmapSize,false);
 
         raw = BitmapFactory.decodeResource(resources,R.drawable.dispose);
         dispose = Bitmap.createScaledBitmap(raw,addButtonSize,addButtonSize,false);

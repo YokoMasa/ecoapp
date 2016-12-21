@@ -9,6 +9,7 @@ import com.ecoapp.app.maslab.ecoapp.GameObject;
 import com.ecoapp.app.maslab.ecoapp.GameObjectHandler;
 import com.ecoapp.app.maslab.ecoapp.MainGameView;
 import com.ecoapp.app.maslab.ecoapp.Paints;
+import com.ecoapp.app.maslab.ecoapp.SizeManager;
 import com.ecoapp.app.maslab.ecoapp.Texts;
 import com.ecoapp.app.maslab.ecoapp.garden.ThemeMenuContent;
 
@@ -44,8 +45,7 @@ public class ThemeMenu extends GameObject implements
 
     @Override
     public void render(Canvas canvas) {
-        canvas.drawRect(0,0,width,height,Paints.theme1);
-        canvas.drawRect(themeMenuX,themeMenuY,themeMenuX+width,themeMenuY+themeMenuHeight, Paints.achievementMenuBack);
+        canvas.drawRect(0,0, SizeManager.width,SizeManager.height, Paints.achievementMenuBack);
         canvas.drawText(text,textX,textY,Paints.menuContentTitle);
         handler.render(canvas,scene);
     }
@@ -60,8 +60,8 @@ public class ThemeMenu extends GameObject implements
         text = Texts.getText("theme_menu_title");
         int textWidth = (int) Paints.menuContentTitle.measureText(text);
         textX = width/2 - textWidth/2;
-        textY = themeMenuY + themeMenuContentGap + menuTitleSize;
-        contentY = textY + themeMenuContentGap;
+        textY = themeMenuY ;
+        contentY = 0;
         motherHandler.addGameObject(this);
         setRenderScenes(new int[]{MainGameView.SCENE_ON_CHOOSE_THEME});
         setTickScenes(new int[]{MainGameView.SCENE_ON_CHOOSE_THEME});
@@ -76,8 +76,22 @@ public class ThemeMenu extends GameObject implements
     }
 
     private void setContent(){
-        handler.addGameObject(new ThemeMenuContent(Bitmaps.theme1,Garden.THEME_1,themeMenuContentGap,contentY,this));
-        handler.addGameObject(new ThemeMenuContent(Bitmaps.theme2,Garden.THEME_2,themeMenuContentGap*2 + themeMenuContentSize,contentY,this));
+        handler.addGameObject(new ThemeMenuContent(Bitmaps.theme1,Garden.THEME_1,this));
+        handler.addGameObject(new ThemeMenuContent(Bitmaps.theme2,Garden.THEME_2,this));
+        handler.addGameObject(new ThemeMenuContent(Bitmaps.theme3,Garden.THEME_3,this));
+        sortContents();
+    }
+
+    private void sortContents(){
+        int cx = SizeManager.listMenuPaddingX;
+        int cy = SizeManager.listMenuPaddingY;
+        for(int i = 0;i<handler.getCount();i++){
+            int x = cx + (i%3) * (themeMenuContentSize + themeMenuContentGap);
+            int y = cy + (i/3) * (themeMenuContentSize + themeMenuContentGap);
+            GameObject object = handler.getGameObject(i);
+            object.setX(x);
+            object.setY(y);
+        }
     }
 
     @Override

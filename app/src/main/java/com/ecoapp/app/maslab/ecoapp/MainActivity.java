@@ -26,14 +26,17 @@ public class MainActivity extends AppCompatActivity implements FragmentHandler {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         switch(code){
             case FragmentHandler.EXIT_ENTRANCE:
-                //MainGameFragment mainGameFragment = new MainGameFragment();
-                //ft.replace(R.id.mother,mainGameFragment);
-                PastFragment pastFragment = new PastFragment();
-                ft.replace(R.id.mother,pastFragment);
-                break;
-            case FragmentHandler.BACK_TO_MAIN:
+            case MainGameFragment.RESTART_GAME:
                 MainGameFragment mainGameFragment = new MainGameFragment();
                 ft.replace(R.id.mother,mainGameFragment);
+                break;
+            case FragmentHandler.BACK_TO_MAIN:
+                MainGameFragment mainGameFragment2 = new MainGameFragment();
+                ft.replace(R.id.mother,mainGameFragment2);
+                break;
+            case MainGameFragment.SHOW_PAST_FRAGMENT:
+                PastFragment pastFragment = new PastFragment();
+                ft.replace(R.id.mother,pastFragment);
                 break;
         }
         ft.commit();

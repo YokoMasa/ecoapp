@@ -34,12 +34,13 @@ public class LeafIndicator extends GameObject {
 
     public LeafIndicator(GameObjectHandler handler){
         setTickScenes(new int[]{MainGameView.SCENE_ON_MAIN,MainGameView.SCENE_ON_DECOR_MENU});
+        setRenderScenes(new int[]{MainGameView.SCENE_ON_MAIN,MainGameView.SCENE_ON_MENU,MainGameView.SCENE_ON_DECOR_MENU,MainGameView.SCENE_ON_KEEP_EDIT_MENU,MainGameView.SCENE_ON_SETTING_MENU});
         setX(SizeManager.leafIndicatorX);
         setY(SizeManager.leafIndicatorY);
         textX = getX() + Bitmaps.leaf.getWidth();
         textY = getY() + Bitmaps.leaf.getHeight()/2 + SizeManager.textSize/2;
         handler.addGameObject(this);
-        leaves = 100;
+        leaves = 0;
         leavesShowing = leaves;
     }
 }

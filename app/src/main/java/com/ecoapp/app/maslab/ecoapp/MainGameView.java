@@ -39,6 +39,7 @@ public class MainGameView extends View implements
     private int scene;
     private int theme;
     private boolean running;
+    private GameCallback fragmentCallBack;
     private File saveFile;
     private Garden garden;
     private GameObjectHandler handler;
@@ -56,7 +57,9 @@ public class MainGameView extends View implements
         this.running = running;
     }
 
-
+    public void setFragmentCallBack(GameCallback fragmentCallBack){
+        this.fragmentCallBack = fragmentCallBack;
+    }
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -67,6 +70,9 @@ public class MainGameView extends View implements
             default:
             case 2:
                 canvas.drawRect(0,0,width,height,Paints.theme2);
+                break;
+            case 3:
+                canvas.drawRect(0,0,width,height,Paints.theme3);
                 break;
         }
         handler.render(canvas,scene);
@@ -221,8 +227,28 @@ public class MainGameView extends View implements
             case SettingMenu.MENU_FADED:
                 scene = SCENE_ON_MAIN;
                 break;
+            case SettingMenu.SHOW_PAST_MENU:
+                if(fragmentCallBack != null){
+                    setRunning(false);
+                    fragmentCallBack.gameCallBack(0);
+                }
+                break;
+            case SettingMenu.ENGLISH:
+                Texts.loadTexts(getContext(),Texts.ENGLISH);
+                restart();
+                break;
+            case SettingMenu.JAPANESE:
+                Texts.loadTexts(getContext(),Texts.JAPANESE);
+                restart();
+                break;
+
         }
 
+    }
+
+    private void restart(){
+        setRunning(false);
+        fragmentCallBack.gameCallBack(1);
     }
 
     @Override

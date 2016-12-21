@@ -21,6 +21,7 @@ public class Texts {
     public static final int ENGLISH = 1;
     public static final String TEXT_JP_PATH = "text-jp";
     public static final String TEXT_EN_PATH = "text-en";
+    public static int loadedLang;
     private static Map<String,String> texts = new HashMap<String,String>();
 
     public static String getText(String key){
@@ -29,6 +30,7 @@ public class Texts {
 
     public static void loadTexts(Context context, int language){
         texts.clear();
+        loadedLang = language;
         AssetManager assetManager = context.getAssets();
         String path = null;
         InputStream is = null;

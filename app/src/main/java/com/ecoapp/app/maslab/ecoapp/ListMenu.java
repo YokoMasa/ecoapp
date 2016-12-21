@@ -90,7 +90,7 @@ public abstract class ListMenu extends GameObject implements GameCallback {
     }
 
     private void drawMenuBase(Canvas canvas){
-        canvas.drawRect(0,0,width,height,Paints.achievementMenuBack);
+        canvas.drawRect(0,0,SizeManager.width,SizeManager.height,Paints.achievementMenuBack);
         canvas.drawBitmap(Bitmaps.crossButton,crossButtonX,crossButtonY,null);;
     }
 

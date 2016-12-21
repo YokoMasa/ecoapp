@@ -52,19 +52,17 @@ public class ThemeMenuContent extends GameObject {
     public void tick() {
         bitmapX = (int) getX() + themeMenuContentPadding*5/2;
         textX = (int) (getX() + themeMenuContentSize/2 - textWidth/2);
+        bitmapY = (int) getY() + themeMenuContentPadding;
+        textY = (int) getY() + themeMenuContentTextY;
     }
 
-    public ThemeMenuContent(Bitmap thumbNail,int theme,int x,int y,ThemeMenuContentListener listener) {
+    public ThemeMenuContent(Bitmap thumbNail,int theme,ThemeMenuContentListener listener) {
         setHandleEventScenes(new int[]{ThemeMenu.SCENE_MAIN});
         this.listener = listener;
         this.theme = theme;
         this.thumbNail = thumbNail;
         this.text = Texts.getText("theme" + Integer.toString(theme));
-        bitmapY = y + themeMenuContentPadding;
-        textY = y + themeMenuContentTextY;
         textWidth = (int) Paints.themeMenuContentText.measureText(text);
-        setX(x);
-        setY(y);
     }
 
     public static interface ThemeMenuContentListener{

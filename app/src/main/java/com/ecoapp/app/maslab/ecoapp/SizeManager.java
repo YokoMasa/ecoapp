@@ -65,6 +65,10 @@ public class SizeManager {
     public static int editMenuVel;
     public static int disposeButtonX;
     public static int editMarkSize;
+    public static int radioButtonSize;
+    public static int radioButtonPaintWidth;
+    public static int radioButtonMiddleSize;
+    public static int radioButtonGap;
 
     public static void scaleSize(Point appScreenSize){
         width = appScreenSize.x;
@@ -119,11 +123,11 @@ public class SizeManager {
         AMCTotalHeight = height - listMenuPaddingY*2;
         gardenItemSize = height / 7;
 
-        themeMenuContentGap = width/25;
-        themeMenuContentSize = (width - 4*themeMenuContentGap) / 3;
+        themeMenuContentSize = (width - listMenuPaddingX*2) * 5/18;
+        themeMenuContentGap = themeMenuContentSize * 3/10;
         themeMenuHeight = themeMenuContentSize + themeMenuContentGap*3 + menuTitleSize;
         themeMenuX = 0;
-        themeMenuY = height/2 - themeMenuHeight/2;
+        themeMenuY = listMenuPaddingY * 2/3;
         themeMenuContentTextSize = themeMenuContentSize/8;
         themeMenuContentTextY = themeMenuContentSize - themeMenuContentTextSize/2;
         themeMenuContentBitmapSize = themeMenuContentSize * 11/16;
@@ -137,6 +141,11 @@ public class SizeManager {
         disposeButtonX = width/2 - addButtonSize/2;
 
         editMarkSize = width/20;
+
+        radioButtonSize = width / 12;
+        radioButtonPaintWidth = radioButtonSize/8;
+        radioButtonMiddleSize = radioButtonSize/5;
+        radioButtonGap = radioButtonSize/2;
 
 
     }

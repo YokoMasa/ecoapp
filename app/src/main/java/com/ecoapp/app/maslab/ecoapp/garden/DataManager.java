@@ -29,6 +29,9 @@ public class DataManager {
 
     public static final String THEME1_FQCN = "com.ecoapp.app.maslab.ecoapp.garden.theme1";
     public static final String THEME2_FQCN = "com.ecoapp.app.maslab.ecoapp.garden.theme2";
+    public static final String THEME3_FQCN = "com.ecoapp.app.maslab.ecoapp.garden.theme3";
+    public static final String THEME4_FQCN = "com.ecoapp.app.maslab.ecoapp.garden.theme4";
+    public static final String THEME5_FQCN = "com.ecoapp.app.maslab.ecoapp.garden.theme5";
 
     public static String BR = System.getProperty("line.separator");
 
@@ -224,6 +227,9 @@ public class DataManager {
             case 2:
                 itemFQCN = THEME2_FQCN + "." + "Item" + id;
                 break;
+            case 3:
+                itemFQCN = THEME3_FQCN + "." + "Item" + id;
+                break;
         }
         Class<?> itemClazz = null;
         try{
@@ -245,6 +251,9 @@ public class DataManager {
                 break;
             case 2:
                 itemFQCN = THEME2_FQCN + "." + "Item" + id;
+                break;
+            case 3:
+                itemFQCN = THEME3_FQCN + "." + "Item" + id;
                 break;
         }
         Class<?> itemClazz = null;

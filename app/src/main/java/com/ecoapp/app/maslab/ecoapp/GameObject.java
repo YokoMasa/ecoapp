@@ -14,6 +14,7 @@ public abstract class GameObject implements Comparable{
     protected GameCallback listener;
     protected float x,y;
     protected float cx,cy;
+    protected int gwidth,gheight;
     protected int[] renderScenes;
     protected int[] tickScenes;
     protected  int[] handleEventScenes;
@@ -109,6 +110,22 @@ public abstract class GameObject implements Comparable{
 
     public void setCx(float cx) {
         this.cx = cx;
+    }
+
+    public int getWidth() {
+        return gwidth;
+    }
+
+    public void setWidth(int width) {
+        this.gwidth = width;
+    }
+
+    public int getHeight() {
+        return gheight;
+    }
+
+    public void setHeight(int height) {
+        this.gheight = height;
     }
 
     public GameObject(){

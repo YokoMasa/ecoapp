@@ -58,4 +58,8 @@ public class GameObjectHandler{
     public int getCount(){
         return gameObjects.size();
     }
+
+    public GameObject getGameObject(int index){
+        return gameObjects.get(index);
+    }
 }

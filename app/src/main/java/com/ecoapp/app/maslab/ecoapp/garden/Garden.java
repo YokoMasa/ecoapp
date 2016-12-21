@@ -43,6 +43,9 @@ public class Garden extends GameObject implements GameCallback {
 
     public static final int THEME_1 = 1;
     public static final int THEME_2 = 2;
+    public static final int THEME_3 = 3;
+    public static final int THEME_4 = 4;
+    public static final int THEME_5 = 5;
     public static final int THEME_VARIATION = 2;
 
     public static final int SCENE_MAIN = 90;
@@ -166,6 +169,9 @@ public class Garden extends GameObject implements GameCallback {
                 default:
                 case 2:
                     canvas.drawRect(0,0,width,height,Paints.theme2);
+                    break;
+                case 3:
+                    canvas.drawRect(0,0,width,height,Paints.theme3);
                     break;
             }
         }
@@ -317,6 +323,9 @@ public class Garden extends GameObject implements GameCallback {
                 break;
             case THEME_2:
                 basePaint = Paints.base_desert;
+                break;
+            case THEME_3:
+                basePaint = Paints.base_ocean;
                 break;
         }
     }

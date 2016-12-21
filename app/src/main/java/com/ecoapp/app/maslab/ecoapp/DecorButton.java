@@ -66,7 +66,7 @@ public class DecorButton extends GameObject {
     public DecorButton(GameObjectHandler handler){
         handler.addGameObject(this);
         setHandleEventScenes(new int[]{MainGameView.SCENE_ON_MAIN});
-        setRenderScenes(new int[]{MainGameView.SCENE_ON_MAIN,MainGameView.SCENE_ON_MENU,MainGameView.SCENE_ON_DECOR_MENU,MainGameView.SCENE_ON_KEEP_EDIT_MENU});
+        setRenderScenes(new int[]{MainGameView.SCENE_ON_MAIN,MainGameView.SCENE_ON_MENU,MainGameView.SCENE_ON_DECOR_MENU,MainGameView.SCENE_ON_KEEP_EDIT_MENU,MainGameView.SCENE_ON_SETTING_MENU});
         middleX = SizeManager.decorButtonX + SizeManager.decorButtonSize/2;
         middleY = SizeManager.decorButtonY + SizeManager.decorButtonSize/2;
         radious = SizeManager.decorButtonSize/2;
