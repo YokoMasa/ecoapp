@@ -15,6 +15,7 @@ theme_menu_title=Choose this month's theme
 theme1=basic
 theme2=desert
 theme3=ocean
+theme4=beach
 theme_dialog_text=本当にこのテーマでよろしいですか？一度選ぶと次の月まで変えることはできません。
 edit_dialog_text=Are you sure you want to delete this item? You can't get it back.
 01=January

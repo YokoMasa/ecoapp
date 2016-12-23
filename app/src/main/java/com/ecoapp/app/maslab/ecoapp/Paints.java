@@ -32,11 +32,13 @@ public class Paints {
     public static Paint dialogBorder;
     public static Paint base_desert;
     public static Paint base_ocean;
+    public static Paint base_beach;
     public static Paint AMCHowMuchText;
     public static Paint AMCUnPurchasable;
     public static Paint theme1;
     public static Paint theme2;
     public static Paint theme3;
+    public static Paint theme4;
     public static Paint themeMenuContentText;
     public static Paint radioButtonOuter;
 
@@ -56,6 +58,10 @@ public class Paints {
         base_desert.setARGB(255,254,227,202);
         base_ocean = new Paint();
         base_ocean.setARGB(255,180,230,235);
+        base_beach = new Paint();
+        LinearGradient beachG = new LinearGradient(SizeManager.baseSize,SizeManager.baseSize/2,0
+        ,SizeManager.baseSize/2,Color.argb(255,200,240,250),Color.argb(255,255,201,107), Shader.TileMode.CLAMP);
+        base_beach.setShader(beachG);
 
         button_R = new Paint();
         button_R.setARGB(255,255,200,200);

@@ -74,6 +74,9 @@ public class MainGameView extends View implements
             case 3:
                 canvas.drawRect(0,0,width,height,Paints.theme3);
                 break;
+            case 4:
+                canvas.drawRect(0,0,width,height,Paints.theme1);
+                break;
         }
         handler.render(canvas,scene);
     }

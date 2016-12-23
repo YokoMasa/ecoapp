@@ -230,6 +230,12 @@ public class DataManager {
             case 3:
                 itemFQCN = THEME3_FQCN + "." + "Item" + id;
                 break;
+            case 4:
+                itemFQCN = THEME4_FQCN + "." + "Item" + id;
+                break;
+            case 5:
+                itemFQCN = THEME5_FQCN + "." + "Item" + id;
+                break;
         }
         Class<?> itemClazz = null;
         try{
@@ -254,6 +260,12 @@ public class DataManager {
                 break;
             case 3:
                 itemFQCN = THEME3_FQCN + "." + "Item" + id;
+                break;
+            case 4:
+                itemFQCN = THEME4_FQCN + "." + "Item" + id;
+                break;
+            case 5:
+                itemFQCN = THEME5_FQCN + "." + "Item" + id;
                 break;
         }
         Class<?> itemClazz = null;

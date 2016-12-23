@@ -173,6 +173,9 @@ public class Garden extends GameObject implements GameCallback {
                 case 3:
                     canvas.drawRect(0,0,width,height,Paints.theme3);
                     break;
+                case 4:
+                    canvas.drawRect(0,0,width,height,Paints.theme1);
+                    break;
             }
         }
         drawBase(canvas);
@@ -326,6 +329,9 @@ public class Garden extends GameObject implements GameCallback {
                 break;
             case THEME_3:
                 basePaint = Paints.base_ocean;
+                break;
+            case THEME_4:
+                basePaint = Paints.base_beach;
                 break;
         }
     }

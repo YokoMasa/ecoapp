@@ -15,6 +15,7 @@ theme_menu_title=今月のテーマを選んでください
 theme1=ベーシック
 theme2=砂漠
 theme3=海
+theme4=ビーチ
 theme_dialog_text=本当にこのテーマでよろしいですか？一度選ぶと次の月まで変えることはできません。
 edit_dialog_text=本当にこのアイテムを削除しますか？削除すると元に戻すことはできません。
 01=1月
