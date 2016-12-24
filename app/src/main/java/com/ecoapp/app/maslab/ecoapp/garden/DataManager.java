@@ -219,6 +219,9 @@ public class DataManager {
     }
 
     public static GardenItem getGardenItemInstance(int theme,String id){
+        if(id.startsWith("0")){
+            id = id.substring(1);
+        }
         String itemFQCN = null;
         switch(theme){
             case 1:
@@ -250,6 +253,9 @@ public class DataManager {
     }
 
     public static int getGardenItemCost(int theme,String id){
+        if(id.startsWith("0")){
+            id = id.substring(1);
+        }
         String itemFQCN = null;
         switch(theme){
             case 1:

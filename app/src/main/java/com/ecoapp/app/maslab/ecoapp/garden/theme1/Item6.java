@@ -17,9 +17,9 @@ public class Item6 extends GardenItem {
     }
 
     public Item6() {
-        id = "6";
+        id = "06";
         mainBitmap = GardenBitmaps.getBitmap(id);
-        icon = GardenBitmaps.getBitmap("icon6");
+        icon = GardenBitmaps.getBitmap("icon06");
         setBitmapDimen();
         cWidth = bitmapWidth * 4/10;
         cHeight = cWidth/3;

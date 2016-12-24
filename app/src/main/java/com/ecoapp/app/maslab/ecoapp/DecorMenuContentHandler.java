@@ -1,6 +1,7 @@
 package com.ecoapp.app.maslab.ecoapp;
 
 import android.graphics.Canvas;
+import android.util.Log;
 import android.util.Size;
 
 import com.ecoapp.app.maslab.ecoapp.garden.DataManager;
@@ -36,7 +37,7 @@ public class DecorMenuContentHandler extends GameObject implements DecorMenuCont
 
     @Override
     public void render(Canvas canvas) {
-        canvas.saveLayer(baseX,baseY,baseX + SizeManager.AMCTotalWidth,baseY + SizeManager.AMCTotalWidth,null,Canvas.CLIP_TO_LAYER_SAVE_FLAG);
+        canvas.saveLayer(baseX,baseY,baseX + SizeManager.AMCTotalWidth,baseY + SizeManager.AMCTotalHeight,null,Canvas.CLIP_TO_LAYER_SAVE_FLAG);
         handler.render(canvas,scene);
         canvas.restore();
     }
@@ -60,6 +61,10 @@ public class DecorMenuContentHandler extends GameObject implements DecorMenuCont
         scene = SCENE_MAIN;
         for(int i = 0;i<itemCount;i++){
             String id = Integer.toString(i + 1);
+            if(id.length() == 1){
+                id = "0" + id;
+            }
+            //Log.i("info",id);
             int howMuch = DataManager.getGardenItemCost(theme,id);
             DecorMenuContent content = new DecorMenuContent(id,howMuch,this);
             content.setX(baseX + (i%3)*gap);

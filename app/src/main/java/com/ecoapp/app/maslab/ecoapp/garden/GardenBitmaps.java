@@ -49,9 +49,10 @@ public class GardenBitmaps {
         try{
             String[] itemFileName = assetManager.list(themeDirName);
             themeItemCount = itemFileName.length;
-            Log.i("info",themeDirName + " " + Integer.toString(themeItemCount));
+            //Log.i("info",Integer.toString(themeItemCount));
             for(int i = 0;i<themeItemCount;i++){
                 String path = themeDirName + "/" + itemFileName[i];
+                Log.i("info",path);
                 is = assetManager.open(path);
                 Bitmap raw = BitmapFactory.decodeStream(is);
                 resizeBitmap(raw,i);
@@ -77,8 +78,14 @@ public class GardenBitmaps {
     }
 
     private static void resizeBitmap(Bitmap raw,int count){
-        String bitmapKey = Integer.toString(count + 1);
-        String iconKey = "icon" + Integer.toString(count + 1);
+        String bitmapKey = null;
+        if((count + 1) < 10){
+            bitmapKey = "0" + Integer.toString(count + 1);
+        }else{
+            bitmapKey = Integer.toString(count + 1);
+        }
+        //Log.i("info",bitmapKey);
+        String iconKey = "icon" + bitmapKey;
         int rawWidth = raw.getWidth();
         int rawHeight = raw.getHeight();
         int dstWidth,dstHeight;
@@ -98,12 +105,10 @@ public class GardenBitmaps {
                 dstWidth = SizeManager.gardenItemSize;
                 dstHeight = dstWidth * rawHeight / rawWidth;
                 minimize = (float)dstWidth / (float)rawWidth;
-                //Log.i("info","first calc" + Float.toString(dstWidth) + "," + Float.toString(rawWidth));
             } else {
                 dstHeight = SizeManager.gardenItemSize;
                 dstWidth = dstHeight * rawWidth / rawHeight;
                 minimize = (float)dstHeight / (float)rawHeight;
-                //Log.i("info","first calc " + Float.toString(dstHeight) + "," + Float.toString(rawHeight));
             }
         }else{
             if (rawHeight < rawWidth) {
@@ -114,7 +119,6 @@ public class GardenBitmaps {
                 dstWidth = dstHeight * rawWidth / rawHeight;
             }
         }
-        //Log.i("info","scale" + dstWidth + "," + dstHeight + "," + Float.toString(minimize));
         Bitmap mainBitmap = Bitmap.createScaledBitmap(raw,dstWidth,dstHeight,false);
         bitmaps.put(bitmapKey,mainBitmap);
     }
