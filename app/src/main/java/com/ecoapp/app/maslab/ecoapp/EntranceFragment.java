@@ -13,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ecoapp.app.maslab.ecoapp.settings.SettingPrefUtil;
+
 
 /**
  * Created by masato on 2016/12/06.
@@ -51,7 +53,7 @@ public class EntranceFragment extends Fragment {
         scaleSize();
         preparePaints();
         Bitmaps.loadBitmaps(getResources());
-        Texts.loadTexts(getActivity(),Texts.JAPANESE);
+        Texts.loadTexts(getActivity(), SettingPrefUtil.getLang( getActivity() ));
         Handler mHandler = new Handler(Looper.getMainLooper());
         mHandler.postDelayed(new Runnable() {
             @Override

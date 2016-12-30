@@ -1,5 +1,6 @@
 package com.ecoapp.app.maslab.ecoapp.settings;
 
+import android.content.Context;
 import android.graphics.Canvas;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -48,6 +49,7 @@ public class SettingMenu extends GameObject implements GameCallback, RadioButton
     private GameObjectHandler handler;
     private RadioButtonList sound;
     private RadioButtonList lang;
+    private Context context;
 
     @Override
     public void handleEvent(int x, int y, int action) {
@@ -158,7 +160,8 @@ public class SettingMenu extends GameObject implements GameCallback, RadioButton
         state = FADING;
     }
 
-    public SettingMenu(GameObjectHandler motherHandler) {
+    public SettingMenu(GameObjectHandler motherHandler,Context context) {
+        this.context = context;
         motherHandler.addGameObject(this);
         setRenderScenes(new int[]{MainGameView.SCENE_ON_SETTING_MENU});
         setTickScenes(new int[]{MainGameView.SCENE_ON_SETTING_MENU});
@@ -180,6 +183,7 @@ public class SettingMenu extends GameObject implements GameCallback, RadioButton
         SettingMenuContent purchase = new SettingMenuContent(handler,Texts.getText("purchase"));
         purchase.setX(SizeManager.listMenuPaddingX);
         purchase.useAsAButton(this,PURCHASE_PRESSED);
+        selectButtons();
     }
 
     private void setSoundContent(){
@@ -206,6 +210,23 @@ public class SettingMenu extends GameObject implements GameCallback, RadioButton
         language.setExtendable(true);
     }
 
+    private void selectButtons(){
+        if(SettingPrefUtil.isSoundOn(context)){
+            sound.selectButton(0);
+        }else{
+            sound.selectButton(1);
+        }
+
+        switch(SettingPrefUtil.getLang(context)){
+            case Texts.ENGLISH:
+                lang.selectButton(1);
+                break;
+            case Texts.JAPANESE:
+                lang.selectButton(0);
+                break;
+        }
+    }
+
     @Override
     public void gameCallBack(int code) {
         switch(code){
@@ -228,15 +249,25 @@ public class SettingMenu extends GameObject implements GameCallback, RadioButton
                 case 0:
                     if(Texts.loadedLang != Texts.JAPANESE) {
                         listener.gameCallBack(JAPANESE);
+                        SettingPrefUtil.setLang(context,Texts.JAPANESE);
                     }
                     break;
                 case 1:
                     if(Texts.loadedLang != Texts.ENGLISH){
                         listener.gameCallBack(ENGLISH);
+                        SettingPrefUtil.setLang(context,Texts.ENGLISH);
                     }
                     break;
             }
         }else if(radioButtonList == sound){
+            switch(code){
+                case 0:
+                    SettingPrefUtil.setSoundOnOff(context,true);
+                    break;
+                case 1:
+                    SettingPrefUtil.setSoundOnOff(context,false);
+                    break;
+            }
 
         }
     }

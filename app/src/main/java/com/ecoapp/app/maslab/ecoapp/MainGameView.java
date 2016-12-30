@@ -89,7 +89,7 @@ public class MainGameView extends View implements
         addButton.setGameCallBack(this);
         DecorButton decorButton = new DecorButton(handler);
         decorButton.setGameCallBack(this);
-        new LeafIndicator(handler);
+        new LeafIndicator(handler,getContext());
 
         saveFile = DataManager.getMonthFile(getContext(),DataManager.getyyyyMM());
         if(DataManager.getTheme(saveFile) == -1){
@@ -120,7 +120,7 @@ public class MainGameView extends View implements
         decorMenu = new DecorMenu(handler,theme);
         decorMenu.setGameCallback(this);
         decorMenu.setDecorMenuListener(this);
-        settingMenu = new SettingMenu(handler);
+        settingMenu = new SettingMenu(handler,getContext());
         settingMenu.setGameCallback(this);
         editMenu = new EditMenu(handler,garden.getItems(),this);
         editMenu.setEditMenuListener(this);

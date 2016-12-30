@@ -73,17 +73,27 @@ public class RadioButtonList extends GameObject implements RadioButton.RadioButt
     @Override
     public void radioButtonChosen(int code) {
         radioButtonListListener.radioButtonChosen(this,code);
+        unselectOtherButtons(code);
+    }
+
+    @Override
+    public void radioButtonUnchosen(int code) {
+
+    }
+
+    public void selectButton(int code){
+        RadioButton button = (RadioButton) handler.getGameObject(code);
+        button.setPressed(true);
+        unselectOtherButtons(code);
+    }
+
+    private void unselectOtherButtons(int code){
         for(int i = 0;i<handler.getCount();i++){
             if(i != code){
                 RadioButton button = (RadioButton) handler.getGameObject(i);
                 button.setPressed(false);
             }
         }
-    }
-
-    @Override
-    public void radioButtonUnchosen(int code) {
-
     }
 
     public static interface RadioButtonListListener{

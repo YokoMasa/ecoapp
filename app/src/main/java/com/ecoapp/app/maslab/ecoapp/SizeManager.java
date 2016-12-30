@@ -123,8 +123,8 @@ public class SizeManager {
         AMCTotalHeight = height - listMenuPaddingY*2;
         gardenItemSize = height / 7;
 
-        themeMenuContentSize = (width - listMenuPaddingX*2) * 5/18;
-        themeMenuContentGap = themeMenuContentSize * 3/10;
+        themeMenuContentSize = (width - listMenuPaddingX*2) * 17/54;
+        themeMenuContentGap = themeMenuContentSize * 3/34;
         themeMenuHeight = themeMenuContentSize + themeMenuContentGap*3 + menuTitleSize;
         themeMenuX = 0;
         themeMenuY = listMenuPaddingY * 2/3;

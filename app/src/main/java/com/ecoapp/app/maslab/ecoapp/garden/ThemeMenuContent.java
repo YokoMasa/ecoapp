@@ -3,6 +3,7 @@ package com.ecoapp.app.maslab.ecoapp.garden;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.util.Log;
+import android.view.MotionEvent;
 
 import com.ecoapp.app.maslab.ecoapp.GameObject;
 import com.ecoapp.app.maslab.ecoapp.Paints;
@@ -34,7 +35,7 @@ public class ThemeMenuContent extends GameObject {
     public void handleEvent(int x, int y, int action) {
         if(getX() < x && x < getX() + themeMenuContentSize){
             if(getY() < y && y < getY() + themeMenuContentSize){
-                if(listener != null){
+                if(listener != null && action == MotionEvent.ACTION_UP){
                     listener.contentTouched(theme);
                 }
             }

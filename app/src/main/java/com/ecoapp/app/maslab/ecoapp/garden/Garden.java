@@ -17,6 +17,7 @@ import com.ecoapp.app.maslab.ecoapp.MainGameView;
 import com.ecoapp.app.maslab.ecoapp.Paints;
 import com.ecoapp.app.maslab.ecoapp.Texts;
 import com.ecoapp.app.maslab.ecoapp.pastdata.PastView;
+import com.ecoapp.app.maslab.ecoapp.settings.SettingPrefUtil;
 
 import java.io.File;
 import java.util.Collections;
