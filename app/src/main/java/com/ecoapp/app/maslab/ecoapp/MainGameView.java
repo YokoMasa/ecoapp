@@ -62,6 +62,12 @@ public class MainGameView extends View implements
     }
 
     @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        setMeasuredDimension(SizeManager.width,SizeManager.height);
+        //super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    }
+
+    @Override
     protected void onDraw(Canvas canvas) {
         switch(theme){
             case 1:

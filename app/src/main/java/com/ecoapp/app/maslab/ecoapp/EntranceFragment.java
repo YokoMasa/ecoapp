@@ -67,7 +67,8 @@ public class EntranceFragment extends Fragment {
         Display display = getActivity().getWindowManager().getDefaultDisplay();
         Point point = new Point();
         display.getSize(point);
-        SizeManager.scaleSize(point);
+        int adHeight = getArguments().getInt("adHeight");
+        SizeManager.scaleSize(point,adHeight);
     }
 
     private void preparePaints(){

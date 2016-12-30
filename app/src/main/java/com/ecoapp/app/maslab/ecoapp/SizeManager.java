@@ -70,9 +70,9 @@ public class SizeManager {
     public static int radioButtonMiddleSize;
     public static int radioButtonGap;
 
-    public static void scaleSize(Point appScreenSize){
+    public static void scaleSize(Point appScreenSize,int adHeight){
         width = appScreenSize.x;
-        height = appScreenSize.y;
+        height = appScreenSize.y - adHeight;
         middleX = width / 2;
         middleY = height / 2;
         baseSize = width * 5/11;

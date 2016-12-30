@@ -43,6 +43,11 @@ public class PastView extends View implements Runnable, View.OnTouchListener,Gam
     }
 
     @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        setMeasuredDimension(SizeManager.width,SizeManager.height);
+    }
+
+    @Override
     protected void onDraw(Canvas canvas) {
         canvas.drawRect(0,0, SizeManager.width,SizeManager.height, Paints.background_white);
         handler.render(canvas,scene);
