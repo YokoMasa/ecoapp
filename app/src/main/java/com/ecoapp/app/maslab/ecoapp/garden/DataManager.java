@@ -2,8 +2,13 @@ package com.ecoapp.app.maslab.ecoapp.garden;
 
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.ecoapp.app.maslab.ecoapp.GameCallback;
+import com.ecoapp.app.maslab.ecoapp.SizeManager;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -32,8 +37,15 @@ public class DataManager {
     public static final String THEME3_FQCN = "com.ecoapp.app.maslab.ecoapp.garden.theme3";
     public static final String THEME4_FQCN = "com.ecoapp.app.maslab.ecoapp.garden.theme4";
     public static final String THEME5_FQCN = "com.ecoapp.app.maslab.ecoapp.garden.theme5";
+    public static final int END_APP = 999999999;
 
     public static String BR = System.getProperty("line.separator");
+
+    private static GameCallback gameEnder;
+
+    public static void setGameCallBack(GameCallback gameCallBack){
+        gameEnder = gameCallBack;
+    }
 
     private static void showErrorToast(Context context,String text){
         Toast.makeText(context,text,Toast.LENGTH_SHORT).show();
@@ -46,10 +58,20 @@ public class DataManager {
     }
 
     public static File getDataDir(Context context){
+        if(context.getExternalFilesDir(null) == null){
+            Toast.makeText(context,"Couldn't access to files. Ending app.",Toast.LENGTH_SHORT).show();
+            if(gameEnder != null){
+                gameEnder.gameCallBack(END_APP);
+            }
+            return null;
+        }
         File root = new File(context.getExternalFilesDir(null),"Data");
         if(!root.exists()){
-            Log.i("info","data directory created");
-            root.mkdir();
+            if(!root.mkdir()){
+                Toast.makeText(context,"failed to create dataDir.",Toast.LENGTH_SHORT).show();
+            }else{
+                Log.i("info","data directory created");
+            }
         }
         if(root.exists() && root.isDirectory()){
             return root;
@@ -65,8 +87,14 @@ public class DataManager {
         }
         File yearDir = new File(dataDir,yyyy);
         if(!yearDir.exists()){
-            Log.i("info","year directory created");
-            yearDir.mkdir();
+            if(!yearDir.mkdir()){
+                Toast.makeText(context,"failed to create yearDir.",Toast.LENGTH_SHORT).show();
+                if(gameEnder != null){
+                    gameEnder.gameCallBack(END_APP);
+                }
+            }else{
+                Log.i("info","year directory created");
+            }
         }
         if(yearDir.exists() && yearDir.isDirectory()){
             return yearDir;
@@ -89,7 +117,10 @@ public class DataManager {
                 monthFile.createNewFile();
                 Log.i("info","month file created");
             }catch(IOException ioe){
-                Toast.makeText(context,"Failed to get save file",Toast.LENGTH_SHORT).show();
+                Toast.makeText(context,"Failed to get save file.",Toast.LENGTH_SHORT).show();
+                if(gameEnder != null){
+                    gameEnder.gameCallBack(END_APP);
+                }
                 ioe.printStackTrace();
             }
         }
@@ -160,7 +191,7 @@ public class DataManager {
             for(int i = 0;i<gardenData.size();i++){
                 String id = gardenData.get(i).getId();
                 int cxI = (int) gardenData.get(i).getCx();
-                int cyI = (int) gardenData.get(i).getCy();
+                int cyI = (int) gardenData.get(i).getCy() + SizeManager.AdHeight/2;
                 String cx = Integer.toString(cxI);
                 String cy = Integer.toString(cyI);
                 String saveLine = BR + id + "," + cx + "," + cy;
@@ -198,7 +229,7 @@ public class DataManager {
                 GardenItem item = getGardenItemInstance(theme,id);
                 if(item != null){
                     item.setCx(Integer.parseInt(cx));
-                    item.setCy(Integer.parseInt(cy));
+                    item.setCy(Integer.parseInt(cy) - SizeManager.AdHeight/2);
                     gardenData.add(item);
                 }
                 dataLine = reader.readLine();

@@ -13,32 +13,28 @@ import static com.ecoapp.app.maslab.ecoapp.SizeManager.tapDistance;
  * Created by masato on 2016/12/08.
  */
 
-public class GameMenuContentHandler extends ContentHandler implements GameMenuContent.GameMenuContentCallback{
+public class GameMenuContentHandler extends ContentHandler implements GameCallback,GameMenuContent.GameMenuContentCallback{
 
     public static final int FADE = 190;
     private final int SCENE_MAIN = 0;
     private final int SCENE_SHOWING_DIALOG = 1;
     private int scene;
     private int leavesDelta;
-    private int firstTouchX;
     private int firstTouchY;
     private int previousY;
     private int contentY;
     private int ticks;
     private int totalContentsHeight;
     private int totalContentsYMin;
-    private int button1X;
-    private int button2X;
-    private int buttonY;
-    private int buttonWidth,buttonHeight;
-    private int dialogTextX,dialogTextY;
-    private int dialogButton1TextX,dialogButton2TextX;
-    private int dialogButtonTextY;
-    private Paint button1;
-    private Paint button2;
-    private boolean dialogButtonPressed;
     private boolean scrollable;
     private boolean scrolling;
+    private GameObjectHandler handler;
+
+    @Override
+    public void render(Canvas canvas) {
+        super.render(canvas);
+        handler.render(canvas,scene);
+    }
 
     @Override
     protected void renderContents(Canvas canvas) {
@@ -49,17 +45,6 @@ public class GameMenuContentHandler extends ContentHandler implements GameMenuCo
             content.render(canvas);
             renderY += content.getHeight() + listContentGap;
         }
-        if(scene == SCENE_SHOWING_DIALOG){
-            canvas.drawRect(menuDialogX,menuDialogY,menuDialogX + menuDialogWidth,menuDialogY + menuDialogHeight,Paints.achievementMenuButton);
-            canvas.drawText(Texts.getText("achievement_dialog_text"),dialogTextX,dialogTextY,Paints.menuContentContent);
-            canvas.drawRect(button1X,buttonY,button1X+buttonWidth,buttonY+buttonHeight,button1);
-            canvas.drawRect(button2X,buttonY,button2X+buttonWidth,buttonY+buttonHeight,button2);
-            canvas.drawText(Texts.getText("achievement_dialog_no"),dialogButton1TextX,dialogButtonTextY,Paints.menuContentContent);
-            canvas.drawText(Texts.getText("achievement_dialog_yes"),dialogButton2TextX,dialogButtonTextY,Paints.menuContentContent);
-            canvas.drawRect(menuDialogX,menuDialogY,menuDialogX + menuDialogWidth,menuDialogY + menuDialogHeight,Paints.dialogBorder);
-        }
-
-
     }
 
     @Override
@@ -79,6 +64,7 @@ public class GameMenuContentHandler extends ContentHandler implements GameMenuCo
             scrollable = false;
             contentY = 0;
         }
+        handler.tick(scene);
     }
 
     @Override
@@ -88,7 +74,6 @@ public class GameMenuContentHandler extends ContentHandler implements GameMenuCo
         if(scene == SCENE_MAIN) {
             switch (action) {
                 case MotionEvent.ACTION_DOWN:
-                    firstTouchX = x;
                     firstTouchY = y;
                     break;
                 case MotionEvent.ACTION_MOVE:
@@ -114,72 +99,14 @@ public class GameMenuContentHandler extends ContentHandler implements GameMenuCo
                     }
                     scrolling = false;
                     previousY = 0;
-                    firstTouchX = 0;
                     firstTouchY = 0;
                     ticks = 0;
                     break;
             }
-        }else{
-            switch(action){
-                case MotionEvent.ACTION_DOWN:
-                    if(buttonY < y && y < buttonY + buttonHeight){
-                        if(button1X < x && x < button1X + buttonWidth){
-                            dialogButtonPressed = true;
-                            button1 = Paints.button_R_pressed;
-                        }else if(button2X < x && x < button2X + buttonWidth){
-                            dialogButtonPressed = true;
-                            button2 = Paints.button_G_pressed;
-                        }
-                    }
-                    break;
-                case MotionEvent.ACTION_MOVE:
-                    if(dialogButtonPressed){
-                        if(buttonY < y && y < buttonY + buttonHeight){
-                            if(button1X < x && x < button1X + buttonWidth){
-                                button1 = Paints.button_R_pressed;
-                            }else if(button2X < x && x < button2X + buttonWidth){
-                                button2 = Paints.button_G_pressed;
-                            }else {
-                                button1 = Paints.button_R;
-                                button2 = Paints.button_G;
-                            }
-                        }else {
-                            button1 = Paints.button_R;
-                            button2 = Paints.button_G;
-                        }
-                    }
-
-                    break;
-                case MotionEvent.ACTION_UP:
-                    if(dialogButtonPressed){
-                        if(buttonY < y && y < buttonY + buttonHeight){
-                            if(button1X < x && x < button1X + buttonWidth){
-                                dialogNo();
-                            }else if(button2X < x && x < button2X + buttonWidth){
-                                dialogYes();
-                            }
-                        }
-                    }
-                    button1 = Paints.button_R;
-                    button2 = Paints.button_G;
-                    dialogButtonPressed = false;
-                    break;
-            }
         }
-    }
-
-    private void dialogYes(){
-        scene = SCENE_MAIN;
-        if(listener != null) {
-            listener.gameCallBack(FADE);
-        }
-        LeafIndicator.leaves += leavesDelta;
-        leavesDelta = 0;
-    }
-
-    private void dialogNo(){
-        scene = SCENE_MAIN;
-        leavesDelta = 0;
+        x += SizeManager.listMenuPaddingX;
+        y += SizeManager.listMenuPaddingY;
+        handler.handleEvent(x,y,action,scene);
     }
 
     private void scroll(int dY){
@@ -237,25 +164,34 @@ public class GameMenuContentHandler extends ContentHandler implements GameMenuCo
 
     public GameMenuContentHandler(){
         scene = SCENE_MAIN;
-        button1 = Paints.button_R;
-        button2 = Paints.button_G;
-        buttonWidth = menuDialogWidth/2;
-        buttonHeight = buttonWidth * 2/5;
-        button1X = menuDialogX;
-        button2X = menuDialogX + menuDialogWidth/2;
-        buttonY = menuDialogY + (menuDialogHeight - buttonHeight);
-        int dialogTextWidth = (int) Paints.menuContentContent.measureText(Texts.getText("achievement_dialog_text"));
-        dialogTextX = menuDialogX + menuDialogWidth/2 - dialogTextWidth/2;
-        dialogTextY = menuDialogY + menuDialogHeight * 2/5;
-        int dialogButtonText1Width = (int) Paints.menuContentContent.measureText(Texts.getText("achievement_dialog_no"));
-        dialogButton1TextX = button1X + buttonWidth/2 - dialogButtonText1Width/2;
-        int dialogButtonText2Width = (int) Paints.menuContentContent.measureText(Texts.getText("achievement_dialog_yes"));
-        dialogButton2TextX = button2X + buttonWidth/2 - dialogButtonText2Width/2;
-        dialogButtonTextY = buttonY + buttonHeight/2 + menuContentTextSize/2 - dialogBorder;
-        addContent(new GameMenuContent(Texts.getText("achievement1_title"),Texts.getText("achievement1_content"),"20",this));
-        addContent(new GameMenuContent(Texts.getText("achievement4_title"),Texts.getText("achievement4_content"),"50",this));
-        addContent(new GameMenuContent(Texts.getText("achievement5_title"),Texts.getText("achievement5_content"),"50",this));
-        addContent(new GameMenuContent(Texts.getText("achievement2_title"),Texts.getText("achievement2_content"),"100",this));
-        addContent(new GameMenuContent(Texts.getText("achievement3_title"),Texts.getText("achievement3_content"),"100",this));
+        handler = new GameObjectHandler();
+        GameDialog dialog = new GameDialog(handler,Texts.getText("achievement_dialog_text"));
+        dialog.setGameCallback(this);
+        dialog.setHandleEventScenes(new int[]{SCENE_SHOWING_DIALOG});
+        dialog.setRenderScenes(new int[]{SCENE_SHOWING_DIALOG});
+        addContent(new GameMenuContent(Texts.getText("achievement1_title"),Texts.getText("achievement1_content"),"5",this));
+        addContent(new GameMenuContent(Texts.getText("achievement4_title"),Texts.getText("achievement4_content"),"10",this));
+        addContent(new GameMenuContent(Texts.getText("achievement5_title"),Texts.getText("achievement5_content"),"20",this));
+        addContent(new GameMenuContent(Texts.getText("achievement6_title"),Texts.getText("achievement6_content"),"20",this));
+        addContent(new GameMenuContent(Texts.getText("achievement2_title"),Texts.getText("achievement2_content"),"50",this));
+        addContent(new GameMenuContent(Texts.getText("achievement3_title"),Texts.getText("achievement3_content"),"50",this));
 }
+
+    @Override
+    public void gameCallBack(int code) {
+        switch(code){
+            case GameDialog.YES:
+                scene = SCENE_MAIN;
+                if(listener != null) {
+                    listener.gameCallBack(FADE);
+                }
+                LeafIndicator.leaves += leavesDelta;
+                leavesDelta = 0;
+                break;
+            case GameDialog.NO:
+                scene = SCENE_MAIN;
+                leavesDelta = 0;
+                break;
+        }
+    }
 }

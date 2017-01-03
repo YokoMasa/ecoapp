@@ -53,20 +53,22 @@ public class DecorMenuContentHandler extends GameObject implements DecorMenuCont
                         previousTouchY = y;
                     }
                 }else{
-                    int deltaY = previousTouchY - y;
-                    if((rootY - deltaY) < (SizeManager.listMaxContentHeight - totalHeight)){
-                        rootY = SizeManager.listMaxContentHeight - totalHeight;
-                    }else if(0 < (rootY - deltaY)){
-                        rootY = 0;
-                    }else{
-                        rootY -= deltaY;
+                    if(scrollable) {
+                        int deltaY = previousTouchY - y;
+                        if ((rootY - deltaY) < (SizeManager.listMaxContentHeight - totalHeight)) {
+                            rootY = SizeManager.listMaxContentHeight - totalHeight;
+                        } else if (0 < (rootY - deltaY)) {
+                            rootY = 0;
+                        } else {
+                            rootY -= deltaY;
+                        }
+                        previousTouchY = y;
                     }
-                    previousTouchY = y;
                 }
                 break;
             case MotionEvent.ACTION_UP:
                 if(!scrolling){
-                    handler.handleEvent(x,y,action,scene);
+                    handler.handleEvent(x,y - rootY,action,scene);
                 }
                 touchingTime = 0;
                 scrolling = false;
@@ -78,15 +80,21 @@ public class DecorMenuContentHandler extends GameObject implements DecorMenuCont
 
     @Override
     public void render(Canvas canvas) {
+        int code = canvas.save();
         canvas.saveLayer(baseX,baseY,baseX + SizeManager.AMCTotalWidth,baseY + SizeManager.AMCTotalHeight,null,Canvas.CLIP_TO_LAYER_SAVE_FLAG);
+        canvas.translate(0,rootY);
         handler.render(canvas,scene);
-        canvas.restore();
+        canvas.restoreToCount(code);
     }
 
     @Override
     public void tick() {
         handler.tick(scene);
-        totalHeight = (int) itemCount/3 * gap - SizeManager.AMCgap;
+        if(itemCount%3 == 0){
+            totalHeight = (int) itemCount/3 * gap - SizeManager.AMCgap;
+        }else{
+            totalHeight = ((int) itemCount/3 + 1) * gap - SizeManager.AMCgap;
+        }
         if(SizeManager.listMaxContentHeight < totalHeight){
             scrollable = true;
         }
@@ -99,6 +107,7 @@ public class DecorMenuContentHandler extends GameObject implements DecorMenuCont
         handler = new GameObjectHandler();
         itemCount = GardenBitmaps.getItemCount();
         gap = SizeManager.AMCSize + SizeManager.AMCgap;
+        rootY = 0;
         scene = SCENE_MAIN;
         for(int i = 0;i<itemCount;i++){
             String id = Integer.toString(i + 1);
@@ -108,11 +117,21 @@ public class DecorMenuContentHandler extends GameObject implements DecorMenuCont
             //Log.i("info",id);
             int howMuch = DataManager.getGardenItemCost(theme,id);
             DecorMenuContent content = new DecorMenuContent(id,howMuch,this);
-            content.setX(baseX + (i%3)*gap);
-            content.setY(baseY + (int)i/3 * gap);
+            //content.setX(baseX + (i%3)*gap);
+            //content.setY(baseY + (int)i/3 * gap);
             handler.addGameObject(content);
         }
+        //handler.sort();
+        sort();
+    }
+
+    private void sort(){
         handler.sort();
+        for(int i = 0;i<handler.getCount();i++){
+            DecorMenuContent content = (DecorMenuContent) handler.getGameObject(i);
+            content.setX(baseX + (i%3)*gap);
+            content.setY(baseY + (int)i/3 * gap);
+        }
     }
 
     @Override

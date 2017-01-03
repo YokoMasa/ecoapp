@@ -21,7 +21,7 @@ public class Item10 extends GardenItem {
         mainBitmap = GardenBitmaps.getBitmap(id);
         icon = GardenBitmaps.getBitmap("icon10");
         setBitmapDimen();
-        cWidth = bitmapWidth * 2/3;
+        cWidth = bitmapWidth * 2/5;
         cHeight = cWidth/3;
         gapX = bitmapWidth/2 - cWidth/2;
         gapY = bitmapHeight - cHeight;

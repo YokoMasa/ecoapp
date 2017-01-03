@@ -8,6 +8,7 @@ import android.graphics.Point;
 
 public class SizeManager {
 
+    public static int AdHeight;
     public static int width,height;
     public static float textSize;
     public static int middleX,middleY;
@@ -71,8 +72,9 @@ public class SizeManager {
     public static int radioButtonGap;
 
     public static void scaleSize(Point appScreenSize,int adHeight){
+        AdHeight = adHeight;
         width = appScreenSize.x;
-        height = appScreenSize.y - adHeight;
+        height = appScreenSize.y - AdHeight;
         middleX = width / 2;
         middleY = height / 2;
         baseSize = width * 5/11;

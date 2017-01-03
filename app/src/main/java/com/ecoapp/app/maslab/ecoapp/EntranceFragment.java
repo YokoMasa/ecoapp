@@ -47,10 +47,8 @@ public class EntranceFragment extends Fragment {
         return view;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        scaleSize();
+    public void init(int adHeight){
+        scaleSize(adHeight);
         preparePaints();
         Bitmaps.loadBitmaps(getResources());
         Texts.loadTexts(getActivity(), SettingPrefUtil.getLang( getActivity() ));
@@ -58,16 +56,19 @@ public class EntranceFragment extends Fragment {
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
+                if(SettingPrefUtil.isSoundOn(getActivity())){
+                    MainActivity.startBGM();
+                }
                 handler.callBack(FragmentHandler.EXIT_ENTRANCE);
             }
         },1000);
     }
 
-    private void scaleSize(){
+    private void scaleSize(int adHeight){
         Display display = getActivity().getWindowManager().getDefaultDisplay();
         Point point = new Point();
         display.getSize(point);
-        int adHeight = getArguments().getInt("adHeight");
+        //int adHeight = getArguments().getInt("adHeight");
         SizeManager.scaleSize(point,adHeight);
     }
 

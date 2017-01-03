@@ -25,10 +25,12 @@ public class GameMenuContent extends GameObject {
     private float buttonTextX;
     private float buttonTextY;
     private float leafX,leafY;
+    private int titleWidth;
     private Paint buttonPaint;
-    private String title;
     private String howMuch;
+    private String titleString;
     private StaticLayout content;
+    private StaticLayout title;
     private boolean extended;
     private GameMenuContentCallback listener;
 
@@ -88,12 +90,14 @@ public class GameMenuContent extends GameObject {
     @Override
     public void render(Canvas canvas) {
         canvas.drawRect(getX(),getY(),getX() + this.width,getY() + this.height,Paints.menuContentBack);
-        titleY = getY() + menuContentHeight/2 + textSize/2;
-        //Log.i("info",Float.toString(textSize));
-        canvas.drawText(title,titleX,titleY,Paints.menuContentTitle);
+        titleY = getY() + menuContentHeight/2 - title.getHeight()/2;
+        canvas.save();
+        canvas.translate(titleX,titleY);
+        title.draw(canvas);
+        canvas.restore();
         if(extended) {
             int code = canvas.save();
-            contentTranslate = titleY + menuContentHeight / 3;
+            contentTranslate = getY() + menuContentHeight;
             canvas.translate(titleX,contentTranslate);
             if(content != null) {
                 content.draw(canvas);
@@ -129,13 +133,15 @@ public class GameMenuContent extends GameObject {
         this.listener = listener;
         this.width = menuContentWidth;
         this.height = menuContentHeight;
+        this.titleString = title;
         titleX = getX() + this.width / 12;
+        titleWidth = this.width * 10/12;
+        this.title = new StaticLayout(title,new TextPaint(Paints.menuContentTitle),titleWidth, Layout.Alignment.ALIGN_CENTER,1.0f,0,false);
         buttonX =  titleX;
         buttonHeight = menuContentHeight * 2/3;
         buttonWidth = menuContentWidth - titleX*2;
         leafX = this.width/2 - (Bitmaps.leaf.getWidth() + Paints.menuContentContent.measureText(howMuch))/2;
         buttonTextX = leafX + Bitmaps.leaf.getWidth();
-        this.title = title;
         this.howMuch = howMuch;
         TextPaint paint = new TextPaint(Paints.menuContentContent);
         if(content != null) {

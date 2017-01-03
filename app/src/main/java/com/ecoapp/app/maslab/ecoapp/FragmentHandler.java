@@ -8,6 +8,7 @@ public interface FragmentHandler {
 
     public static final int EXIT_ENTRANCE = 0;
     public static final int BACK_TO_MAIN = 1;
+    public static final int START_BGM = 619872;
 
     public void callBack(int code);
 }

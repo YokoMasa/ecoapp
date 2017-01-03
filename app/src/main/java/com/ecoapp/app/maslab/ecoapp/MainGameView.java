@@ -100,6 +100,7 @@ public class MainGameView extends View implements
         saveFile = DataManager.getMonthFile(getContext(),DataManager.getyyyyMM());
         if(DataManager.getTheme(saveFile) == -1){
             chooseTheme();
+            LeafIndicator.leaves = 0;
         }else{
             theme = DataManager.getTheme(saveFile);
             garden = new Garden(handler,getContext(),saveFile,false);

@@ -78,8 +78,8 @@ public class ThemeMenu extends GameObject implements
     private void setContent(){
         handler.addGameObject(new ThemeMenuContent(Bitmaps.theme1,Garden.THEME_1,this));
         handler.addGameObject(new ThemeMenuContent(Bitmaps.theme2,Garden.THEME_2,this));
-        handler.addGameObject(new ThemeMenuContent(Bitmaps.theme3,Garden.THEME_3,this));
-        handler.addGameObject(new ThemeMenuContent(Bitmaps.theme4,Garden.THEME_4,this));
+        //handler.addGameObject(new ThemeMenuContent(Bitmaps.theme3,Garden.THEME_3,this));
+        //handler.addGameObject(new ThemeMenuContent(Bitmaps.theme4,Garden.THEME_4,this));
         sortContents();
     }
 

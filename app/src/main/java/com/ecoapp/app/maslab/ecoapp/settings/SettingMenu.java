@@ -8,8 +8,10 @@ import android.view.MotionEvent;
 import com.ecoapp.app.maslab.ecoapp.BitmapButton;
 import com.ecoapp.app.maslab.ecoapp.Bitmaps;
 import com.ecoapp.app.maslab.ecoapp.GameCallback;
+import com.ecoapp.app.maslab.ecoapp.GameDialog;
 import com.ecoapp.app.maslab.ecoapp.GameObject;
 import com.ecoapp.app.maslab.ecoapp.GameObjectHandler;
+import com.ecoapp.app.maslab.ecoapp.MainActivity;
 import com.ecoapp.app.maslab.ecoapp.MainGameView;
 import com.ecoapp.app.maslab.ecoapp.Paints;
 import com.ecoapp.app.maslab.ecoapp.SizeManager;
@@ -31,11 +33,15 @@ public class SettingMenu extends GameObject implements GameCallback, RadioButton
     private static final int FADING = 2;
     private static final int HIDING = 3;
 
+    private static final int SCENE_MAIN = 5;
+    private static final int SCENE_SHOWING_DIALOG = 4;
+
     private final int CROSS_PRESSED = 9999;
     private final int PAST_PRESSED = 3275;
     private final int PURCHASE_PRESSED = 5653;
 
     private int state;
+    private int scene;
     private int menuY;
     private int totalContentHeight;
     private int maxScroll;
@@ -47,6 +53,7 @@ public class SettingMenu extends GameObject implements GameCallback, RadioButton
     private boolean scrolling;
     private BitmapButton crossButton;
     private GameObjectHandler handler;
+    private GameObjectHandler dialogHandler;
     private RadioButtonList sound;
     private RadioButtonList lang;
     private Context context;
@@ -91,32 +98,35 @@ public class SettingMenu extends GameObject implements GameCallback, RadioButton
             case MotionEvent.ACTION_UP:
                 if(!scrolling){
                     int modY = y - contentY;
-                    handler.handleEvent(x,modY,action,0);
+                    handler.handleEvent(x,modY,action,scene);
                 }
                 touchingTime = 0;
                 break;
         }
+        dialogHandler.handleEvent(x,y,action,scene);
     }
 
     @Override
     public void render(Canvas canvas) {
-        canvas.save();
+        int code1 = canvas.save();
         canvas.translate(0,menuY);
         canvas.drawRect(0,0,SizeManager.width,SizeManager.height, Paints.achievementMenuBack);
 
         crossButton.render(canvas);
 
-        canvas.saveLayer(SizeManager.listMenuPaddingX,SizeManager.listMenuPaddingY,SizeManager.listMenuPaddingX + SizeManager.menuContentWidth,SizeManager.height - SizeManager.listMenuPaddingY,null,Canvas.CLIP_TO_LAYER_SAVE_FLAG);
+        int code2 = canvas.saveLayer(SizeManager.listMenuPaddingX,SizeManager.listMenuPaddingY,SizeManager.listMenuPaddingX + SizeManager.menuContentWidth,SizeManager.height - SizeManager.listMenuPaddingY,null,Canvas.CLIP_TO_LAYER_SAVE_FLAG);
         canvas.translate(0,contentY);
-        handler.render(canvas,0);
-
-        canvas.restore();
+        handler.render(canvas,scene);
+        canvas.restoreToCount(code2);
+        dialogHandler.render(canvas,scene);
+        canvas.restoreToCount(code1);
     }
 
     @Override
     public void tick() {
         crossButton.tick();
-        handler.tick(0);
+        handler.tick(scene);
+        dialogHandler.tick(scene);
         if(state == APPEARING){
             menuY -= SizeManager.fadeVel;
             if(menuY < 0){
@@ -167,8 +177,10 @@ public class SettingMenu extends GameObject implements GameCallback, RadioButton
         setTickScenes(new int[]{MainGameView.SCENE_ON_SETTING_MENU});
         setHandleEventScenes(new int[]{MainGameView.SCENE_ON_SETTING_MENU});
         this.handler = new GameObjectHandler();
+        this.dialogHandler = new GameObjectHandler();
         crossButton = new BitmapButton(null, SizeManager.crossButtonX,SizeManager.crossButtonY, Bitmaps.crossButton,Bitmaps.crossButton,this,CROSS_PRESSED);
         state = HIDING;
+        scene = SCENE_MAIN;
         menuY = SizeManager.height;
         contentY = 0;
         setContent();
@@ -178,12 +190,22 @@ public class SettingMenu extends GameObject implements GameCallback, RadioButton
         SettingMenuContent content = new SettingMenuContent(handler, Texts.getText("past_gardens"));
         content.setX(SizeManager.listMenuPaddingX);
         content.useAsAButton(this,PAST_PRESSED);
+        content.setHandleEventScenes(new int[]{SCENE_MAIN});
         setSoundContent();
         setLangContent();
+        /*
         SettingMenuContent purchase = new SettingMenuContent(handler,Texts.getText("purchase"));
         purchase.setX(SizeManager.listMenuPaddingX);
         purchase.useAsAButton(this,PURCHASE_PRESSED);
+        purchase.setHandleEventScenes(new int[]{SCENE_MAIN});
+        */
         selectButtons();
+
+        GameDialog dialog = new GameDialog(dialogHandler,Texts.getText("purchase_dialog"));
+        dialog.setGameCallback(this);
+        dialog.setRenderScenes(new int[]{SCENE_SHOWING_DIALOG});
+        dialog.setTickScenes(new int[]{SCENE_SHOWING_DIALOG});
+        dialog.setHandleEventScenes(new int[]{SCENE_SHOWING_DIALOG});
     }
 
     private void setSoundContent(){
@@ -196,6 +218,7 @@ public class SettingMenu extends GameObject implements GameCallback, RadioButton
                                                                    + SizeManager.radioButtonSize + SizeManager.radioButtonGap);
         test.addGameObject(sound,SizeManager.menuContentWidth * 5/6,SizeManager.menuContentHeight/5);
         test.setExtendable(true);
+        test.setHandleEventScenes(new int[]{SCENE_MAIN});
     }
 
     private void setLangContent(){
@@ -208,6 +231,7 @@ public class SettingMenu extends GameObject implements GameCallback, RadioButton
                 + SizeManager.radioButtonSize + SizeManager.radioButtonGap);
         language.addGameObject(lang,SizeManager.menuContentWidth * 5/6,SizeManager.menuContentHeight/5);
         language.setExtendable(true);
+        language.setHandleEventScenes(new int[]{SCENE_MAIN});
     }
 
     private void selectButtons(){
@@ -238,6 +262,15 @@ public class SettingMenu extends GameObject implements GameCallback, RadioButton
                     listener.gameCallBack(SHOW_PAST_MENU);
                 }
                 break;
+            case PURCHASE_PRESSED:
+                scene = SCENE_SHOWING_DIALOG;
+                break;
+            case GameDialog.YES:
+                scene = SCENE_MAIN;
+                break;
+            case GameDialog.NO:
+                scene = SCENE_MAIN;
+                break;
         }
     }
 
@@ -263,9 +296,11 @@ public class SettingMenu extends GameObject implements GameCallback, RadioButton
             switch(code){
                 case 0:
                     SettingPrefUtil.setSoundOnOff(context,true);
+                    MainActivity.startBGM();
                     break;
                 case 1:
                     SettingPrefUtil.setSoundOnOff(context,false);
+                    MainActivity.stopBGM();
                     break;
             }
 

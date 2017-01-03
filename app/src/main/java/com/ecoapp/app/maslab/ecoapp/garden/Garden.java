@@ -15,6 +15,7 @@ import com.ecoapp.app.maslab.ecoapp.GameObjectHandler;
 import com.ecoapp.app.maslab.ecoapp.LeafIndicator;
 import com.ecoapp.app.maslab.ecoapp.MainGameView;
 import com.ecoapp.app.maslab.ecoapp.Paints;
+import com.ecoapp.app.maslab.ecoapp.SizeManager;
 import com.ecoapp.app.maslab.ecoapp.Texts;
 import com.ecoapp.app.maslab.ecoapp.pastdata.PastView;
 import com.ecoapp.app.maslab.ecoapp.settings.SettingPrefUtil;
@@ -300,6 +301,7 @@ public class Garden extends GameObject implements GameCallback {
         setPaint();
         setHandleEventScenes(new int[]{MainGameView.SCENE_ON_MAIN,MainGameView.SCENE_ON_KEEP_EDIT_MENU,MainGameView.SCENE_ON_KEEP_EDIT,MainGameView.SCENE_ON_EDIT_GARDEN, PastView.SCENE_GARDEN});
         items = DataManager.loadGardenData(savePath);
+        //adjustItems();
         DataManager.getTheme(savePath);
         scene = SCENE_MAIN;
         handler = new GameObjectHandler();
@@ -317,7 +319,14 @@ public class Garden extends GameObject implements GameCallback {
         }else{
             BitmapButton crossButton = new BitmapButton(handler,crossButtonX,crossButtonY,Bitmaps.crossButton,Bitmaps.crossButton,this,CROSS_PRESSED);
         }
-    };
+    }
+
+    private void adjustItems(){
+        for(int i = 0;i<items.size();i++){
+            GardenItem item = items.get(i);
+            item.setCy(item.getCy() - SizeManager.AdHeight);
+        }
+    }
 
     private void setPaint(){
         switch(theme){

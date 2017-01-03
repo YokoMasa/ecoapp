@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 
 import com.ecoapp.app.maslab.ecoapp.Texts;
 
+import java.util.Locale;
+
 /**
  * Created by masato on 2016/12/30.
  */
@@ -55,6 +57,16 @@ public class SettingPrefUtil {
 
     public static int getLang(Context context){
         SharedPreferences preferences = getSharedPreferences(context);
-        return preferences.getInt(LANG, Texts.JAPANESE);
+        int lang = preferences.getInt(LANG, -1);
+        if(lang == -1){
+            Locale locale = Locale.getDefault();
+            String language = locale.getLanguage();
+            if(language.equals("ja")){
+                lang = Texts.JAPANESE;
+            }else{
+                lang = Texts.ENGLISH;
+            }
+        }
+        return lang;
     }
 }
